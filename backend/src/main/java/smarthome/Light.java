@@ -47,3 +47,5 @@ public class Light extends Device implements IPoweredDevice{
     return state == LightState.On;
   }
 }
+
+//TODO: cant change brightness or color while off
