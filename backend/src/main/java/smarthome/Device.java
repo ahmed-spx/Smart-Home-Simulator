@@ -18,4 +18,17 @@ public abstract class Device {
     this.location = location;
     this.type = type;
   }
+
+  public int getId() {
+    return id;
+  }
+  public String getName() {
+    return name;
+  }
+  public String getLocation() {
+    return location;
+  }
+  public DeviceType getType() {
+    return type;
+  }
 }
