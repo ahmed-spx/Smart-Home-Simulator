@@ -2,6 +2,7 @@ package main.java.smarthome;
 
 public class Thermostat extends Device implements IPoweredDevice {
   private boolean isOn;
+  //fix this whole thing, make enum separate state too
   private int mode;
   private double desiredTemperature;
 

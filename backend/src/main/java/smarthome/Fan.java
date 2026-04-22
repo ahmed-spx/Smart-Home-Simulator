@@ -2,6 +2,7 @@ package main.java.smarthome;
 
 public class Fan extends Device implements IPoweredDevice {
   private boolean isOn;
+  //take enum out and make it state like lights
   protected enum speed {
     Off,
     Low,
