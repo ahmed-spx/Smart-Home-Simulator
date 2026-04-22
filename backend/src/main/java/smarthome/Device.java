@@ -1,25 +1,22 @@
 package main.java.smarthome;
 
 public abstract class Device {
-  private int id;
-  private String name;
-  private String location;
-  private DeviceType type;
+  //fields
+  private final String id;
+  private final String name;
+  private final String location;
+  private final DeviceType type;
 
-  protected enum DeviceType {
-    Light,
-    Fan,
-    Thermostat,
-    DoorLock
-  }
-  public Device(int id, String name, String location, DeviceType type) {
+  //constructor
+  public Device(String id, String name, String location, DeviceType type) {
     this.id = id;
     this.name = name;
     this.location = location;
     this.type = type;
   }
 
-  public int getId() {
+  //getters
+  public String getId() {
     return id;
   }
   public String getName() {

@@ -2,35 +2,48 @@ package main.java.smarthome;
 import java.awt.Color;
 
 public class Light extends Device implements IPoweredDevice{
-  private boolean isOn;
-
+  //fields
+  private LightState state;
   private int brightness = 100;
   private Color color = new Color(255, 255, 255);
 
-  public Light(int id, String name, String location, DeviceType type) {
-    super(id, name, location, type);
-    this.isOn = false;
+  //constructor
+  public Light(String id, String name, String location) {
+    super(id, name, location, DeviceType.Light);
+    this.state = LightState.Off;
+    this.brightness = brightness;
+    this.color = color;
   }
 
+  //setters
   public void setBrightness(int brightness) {
     if (brightness < 10 || brightness > 100) {
       throw new IllegalArgumentException("Brightness must be between 10 and 100");
-    } else {
-      this.brightness = brightness;
     }
+    this.brightness = brightness;
   }
-
   public void setColor(Color color) {
     this.color = color;
   }
 
-  @Override
-  public void togglePower() {
-    this.isOn = !this.isOn;
+  //getters
+  public LightState getState() {
+    return state;
+  }
+  public int getBrightness() {
+    return brightness;
+  }
+  public Color getColor() {
+    return color;
   }
 
+  //overrides
+  @Override
+  public void togglePower() {
+    this.state = this.state == LightState.On ? LightState.Off : LightState.On;
+  }
   @Override
   public boolean isOn() {
-    return this.isOn;
+    return state == LightState.On;
   }
 }

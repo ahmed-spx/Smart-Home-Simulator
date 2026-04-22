@@ -6,7 +6,7 @@ public class Thermostat extends Device implements IPoweredDevice {
   private double desiredTemperature;
 
 
-  public Thermostat(int id, String name, String location, DeviceType type) {
+  public Thermostat(String id, String name, String location, DeviceType type) {
     super(id, name, location, type);
     this.isOn = false;
   }
