@@ -1,4 +1,4 @@
-package main.java.smarthome;
+package main.java.smarthome.Light;
 
 public enum LightState {
   Off,
