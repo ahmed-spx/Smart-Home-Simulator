@@ -12,7 +12,7 @@ public class Light extends Device {
   //constructor
   public Light(String id, String name, String location) {
     super(id, name, location, DeviceType.Light);
-    this.lightState = new OffLight();
+    this.lightState = new OnLight();
     this.brightness = 100;
     this.color = Color.WHITE;
   }
@@ -21,13 +21,11 @@ public class Light extends Device {
   public void togglePower() {
     lightState.togglePower(this);
   }
-
   public void setBrightness(int brightness) {
     if (brightness < 10 || brightness > 100) {
       throw new IllegalArgumentException("Brightness must be between 10 and 100");
     } else lightState.setBrightness(this, brightness);
   }
-  
   public void setColor(Color color) {
     lightState.setColor(this, color);
   }
@@ -48,5 +46,3 @@ public class Light extends Device {
     this.lightState = newState;
   }
 }
-
-//TODO: cant change brightness or color while off
