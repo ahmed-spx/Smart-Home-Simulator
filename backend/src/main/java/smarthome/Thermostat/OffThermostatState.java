@@ -14,7 +14,6 @@ public class OffThermostatState implements IThermostatState {
 
   @Override
   public void togglePower(Thermostat thermostat) {
-    //thermostat.setMode(new IdleThermostatState(thermostat));
   }
 
   @Override

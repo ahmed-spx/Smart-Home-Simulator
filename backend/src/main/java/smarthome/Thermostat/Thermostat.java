@@ -1,12 +1,13 @@
 package main.java.smarthome.Thermostat;
-
 import main.java.smarthome.Device;
 import main.java.smarthome.DeviceType;
 
 public class Thermostat extends Device {
   //attributes
-  private IThermostatState mode;
+  private IThermostatState thermostat;
+  private ThermostatState mode;
   private int desiredTemperature;
+  private int ambientTemperature;
 
   //constructor
   public Thermostat(String id, String name, String location) {
@@ -17,6 +18,14 @@ public class Thermostat extends Device {
 
   //setters
   public void togglePower() {
-    mode.togglePower(this);
+    thermostat.togglePower(this);
+  }
+  public void setDesiredTemp(int temperature){
+    if (temperature < 60 || temperature > 80) {
+      throw new IllegalArgumentException("Temperature must be between 60 and 80");
+    } else thermostat.setTemperature(this, temperature);
+  }
+  public void setMode(ThermostatState mode){
+    thermostat.setMode(this, mode);
   }
 }
