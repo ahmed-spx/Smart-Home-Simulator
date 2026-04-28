@@ -1,7 +1,7 @@
 package main.java.smarthome.Thermostat;
 
 public class OffThermostatState implements IThermostatState {
-  
+
   @Override
   public ThermostatState getState() {
     return ThermostatState.Off;
@@ -18,7 +18,5 @@ public class OffThermostatState implements IThermostatState {
 
   @Override
   public void setTemperature(Thermostat thermostat, int temperature) {
-  }
-  
+  }  
 }
-//instead of toggle power, we can make it so it has options and not just toggle

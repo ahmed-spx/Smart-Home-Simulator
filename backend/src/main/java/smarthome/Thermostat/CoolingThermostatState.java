@@ -1,10 +1,10 @@
 package main.java.smarthome.Thermostat;
 
-public class IdleThermostatState implements IThermostatState {
-
+public class CoolingThermostatState implements IThermostatState{
+        
     @Override
     public ThermostatState getState() {
-        return ThermostatState.Idle;
+        return ThermostatState.Cooling;
     }
 
     @Override
@@ -19,5 +19,4 @@ public class IdleThermostatState implements IThermostatState {
     @Override
     public void setTemperature(Thermostat thermostat, int temperature) {
     }
-    
 }
