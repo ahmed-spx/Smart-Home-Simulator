@@ -1,12 +1,7 @@
 package main.java.smarthome.Thermostat;
 
 public class OffThermostatState implements IThermostatState {
-  private Thermostat thermostat;
-
-  public OffThermostatState(Thermostat thermostat) {
-    this.thermostat = thermostat;
-  }
-
+  
   @Override
   public ThermostatState getState() {
     return ThermostatState.Off;
@@ -14,6 +9,7 @@ public class OffThermostatState implements IThermostatState {
 
   @Override
   public void togglePower(Thermostat thermostat) {
+    thermostat.changeState(new IdleThermostatState());
   }
 
   @Override
