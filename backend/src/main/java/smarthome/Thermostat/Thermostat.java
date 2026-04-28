@@ -7,12 +7,12 @@ public class Thermostat extends Device {
   private IThermostatState thermostat;
   private ThermostatState mode;
   private int desiredTemperature;
-  private int ambientTemperature;
+  //private int ambientTemperature;
 
   //constructor
   public Thermostat(String id, String name, String location) {
     super(id, name, location, DeviceType.Thermostat);
-    //this.mode = new OffThermostatState(this);
+    //this.thermostat = new OffThermostatState();
     this.desiredTemperature = 70;
   }
 
@@ -27,5 +27,18 @@ public class Thermostat extends Device {
   }
   public void setMode(ThermostatState mode){
     thermostat.setMode(this, mode);
+  }
+
+  //getters
+  public ThermostatState getThermostatState() {
+    return thermostat.getState();
+  }
+  public int getDesiredTemperature() {
+    return desiredTemperature;
+  }
+
+  //transition
+  public void changeState(IThermostatState newState) {
+    this.thermostat = newState;
   }
 }
