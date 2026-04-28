@@ -1,10 +1,13 @@
-package main.java.smarthome.Thermostat;
+package main.java.smarthome.Thermostat.ThermostatStates;
+import main.java.smarthome.Thermostat.IThermostatState;
+import main.java.smarthome.Thermostat.Thermostat;
+import main.java.smarthome.Thermostat.ThermostatState;
 
-public class CoolingThermostatState implements IThermostatState{
-        
+public class IdleThermostatState implements IThermostatState {
+
     @Override
     public ThermostatState getState() {
-        return ThermostatState.Cooling;
+        return ThermostatState.Idle;
     }
 
     @Override
@@ -19,4 +22,5 @@ public class CoolingThermostatState implements IThermostatState{
     @Override
     public void setTemperature(Thermostat thermostat, int temperature) {
     }
+    
 }

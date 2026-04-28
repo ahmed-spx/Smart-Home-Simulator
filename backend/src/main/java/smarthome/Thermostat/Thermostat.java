@@ -1,6 +1,7 @@
 package main.java.smarthome.Thermostat;
 import main.java.smarthome.Device;
 import main.java.smarthome.DeviceType;
+import main.java.smarthome.Thermostat.ThermostatStates.OffThermostatState;
 
 public class Thermostat extends Device {
   //attributes
