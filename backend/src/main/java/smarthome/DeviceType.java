@@ -4,5 +4,5 @@ public enum DeviceType {
   Light,
   Thermostat,
   Fan,
-  SecurityCamera
+  Lock
 }

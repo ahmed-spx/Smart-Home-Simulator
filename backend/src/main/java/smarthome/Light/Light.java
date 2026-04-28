@@ -22,9 +22,7 @@ public class Light extends Device {
     lightState.togglePower(this);
   }
   public void setBrightness(int brightness) {
-    if (brightness < 10 || brightness > 100) {
-      throw new IllegalArgumentException("Brightness must be between 10 and 100");
-    } else lightState.setBrightness(this, brightness);
+    lightState.setBrightness(this, brightness);
   }
   public void setColor(Color color) {
     lightState.setColor(this, color);

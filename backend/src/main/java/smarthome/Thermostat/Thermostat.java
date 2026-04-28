@@ -6,8 +6,8 @@ import main.java.smarthome.Thermostat.ThermostatStates.OffThermostatState;
 public class Thermostat extends Device {
   //attributes
   private IThermostatState thermostatState;
-  private ThermostatState mode;
-  private int desiredTemperature;
+    private int desiredTemperature;
+  //private ThermostatState mode;
   //private int ambientTemperature;
 
   //constructor
@@ -15,6 +15,7 @@ public class Thermostat extends Device {
     super(id, name, location, DeviceType.Thermostat);
     this.thermostatState = new OffThermostatState();
     this.desiredTemperature = 70;
+    //this.mode = ThermostatState.Auto;
   }
 
   //setters
@@ -22,9 +23,7 @@ public class Thermostat extends Device {
     thermostatState.togglePower(this);
   }
   public void setDesiredTemp(int temperature){
-    if (temperature < 60 || temperature > 80) {
-      throw new IllegalArgumentException("Temperature must be between 60 and 80");
-    } else thermostatState.setTemperature(this, temperature);
+    thermostatState.setTemperature(this, temperature);
   }
   public void setMode(ThermostatState mode){
     thermostatState.setMode(this, mode);
@@ -37,6 +36,9 @@ public class Thermostat extends Device {
   public int getDesiredTemperature() {
     return desiredTemperature;
   }
+  // public ThermostatState getMode() {
+  //   return mode;
+  // }
 
   //transition
   public void changeState(IThermostatState newState) {
