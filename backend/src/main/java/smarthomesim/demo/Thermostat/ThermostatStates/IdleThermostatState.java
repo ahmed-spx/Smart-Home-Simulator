@@ -15,15 +15,30 @@ public class IdleThermostatState implements IThermostatState {
         thermostat.changeState(new OffThermostatState());
     }
 
-    @Override
-    public void setMode(Thermostat thermostat, ThermostatMode mode) {
-        thermostat.setMode(mode);
-        
+    public void autoMode(Thermostat thermostat, ThermostatMode mode, int ambientTemp, int desiredTemp) {
+        if (mode == ThermostatMode.Auto) {
+            if (ambientTemp < desiredTemp) {
+                thermostat.changeState(new HeatingThermostatState());
+            } else if (ambientTemp > desiredTemp) {
+                thermostat.changeState(new CoolingThermostatState());
+            }
+        }
     }
 
-    @Override
-    public void setTemperature(Thermostat thermostat, int temperature) {
-        thermostat.setTemperature(temperature);
+    public void coolingMode(Thermostat thermostat, ThermostatMode mode, int ambientTemp, int desiredTemp) {
+        if (mode == ThermostatMode.Cooling) {
+            if (ambientTemp > desiredTemp) {
+                thermostat.changeState(new CoolingThermostatState());
+            }
+        }
+    }
+
+    public void heatingMode(Thermostat thermostat, ThermostatMode mode, int ambientTemp, int desiredTemp) {
+        if (mode == ThermostatMode.Heating) {
+            if (ambientTemp < desiredTemp) {
+                thermostat.changeState(new HeatingThermostatState());
+            }
+        }
     }
     
 }

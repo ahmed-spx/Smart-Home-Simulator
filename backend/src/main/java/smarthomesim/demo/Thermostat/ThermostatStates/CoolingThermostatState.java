@@ -14,14 +14,13 @@ public class CoolingThermostatState implements IThermostatState{
     public void togglePower(Thermostat thermostat) {
         thermostat.changeState(new OffThermostatState());
     }
-
-    @Override
-    public void setMode(Thermostat thermostat, ThermostatMode mode) {
-        thermostat.setMode(mode);
-    }
-
-    @Override
-    public void setTemperature(Thermostat thermostat, int temperature) {
-        thermostat.setTemperature(temperature);
+    
+    public void coolingMode(Thermostat thermostat, int ambientTemp, int desiredTemp) {
+        if (ambientTemp > desiredTemp) {
+            Thread.sleep(5000);
+            ambientTemp--;
+        } else {
+            thermostat.changeState(new IdleThermostatState());
+        }
     }
 }

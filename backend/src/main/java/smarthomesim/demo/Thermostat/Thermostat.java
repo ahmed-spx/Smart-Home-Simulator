@@ -8,14 +8,13 @@ public class Thermostat extends Device {
   private IThermostatState thermostatState;
   private ThermostatMode mode;
   private int desiredTemperature;
-  private int ambientTemperature;
+  private static int ambientTemperature = 65;
 
   //constructor
   public Thermostat(String id, String name, String location) {
     super(id, name, location, DeviceType.Thermostat);
     this.thermostatState = new OffThermostatState();
     this.desiredTemperature = 70;
-    this.ambientTemperature = 65;
     this.mode = ThermostatMode.Auto;
   }
 
