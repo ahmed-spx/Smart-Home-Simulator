@@ -6,16 +6,17 @@ import smarthomesim.demo.Thermostat.ThermostatStates.OffThermostatState;
 public class Thermostat extends Device {
   //attributes
   private IThermostatState thermostatState;
-    private int desiredTemperature;
-  //private ThermostatState mode;
-  //private int ambientTemperature;
+  private ThermostatMode mode;
+  private int desiredTemperature;
+  private int ambientTemperature;
 
   //constructor
   public Thermostat(String id, String name, String location) {
     super(id, name, location, DeviceType.Thermostat);
     this.thermostatState = new OffThermostatState();
     this.desiredTemperature = 70;
-    //this.mode = ThermostatState.Auto;
+    this.ambientTemperature = 65;
+    this.mode = ThermostatMode.Auto;
   }
 
   //setters
@@ -36,9 +37,12 @@ public class Thermostat extends Device {
   public int getDesiredTemperature() {
     return desiredTemperature;
   }
-  // public ThermostatState getMode() {
-  //   return mode;
-  // }
+  public int getAmbientTemperature() {
+    return ambientTemperature;
+  }
+  public ThermostatMode getMode() {
+    return mode;
+  }
 
   //transition
   public void changeState(IThermostatState newState) {

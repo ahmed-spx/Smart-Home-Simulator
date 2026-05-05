@@ -16,11 +16,13 @@ public class HeatingThermostatState implements IThermostatState {
     }
 
     @Override
-    public void setMode(Thermostat thermostat, ThermostatState mode) {
+    public void setMode(Thermostat thermostat, ThermostatMode mode) {
+        thermostat.setMode(mode);
     }
 
     @Override
     public void setTemperature(Thermostat thermostat, int temperature) {
+        thermostat.setTemperature(temperature);
     }
     
 }
