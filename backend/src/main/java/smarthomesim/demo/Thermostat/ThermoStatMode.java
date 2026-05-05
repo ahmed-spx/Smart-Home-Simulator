@@ -1,4 +1,4 @@
-public enum ThermoStatMode {
+public enum ThermostatMode {
     Auto,
     Heating,
     Cooling

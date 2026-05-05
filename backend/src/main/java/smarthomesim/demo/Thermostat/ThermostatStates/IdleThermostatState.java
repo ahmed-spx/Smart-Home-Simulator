@@ -17,7 +17,7 @@ public class IdleThermostatState implements IThermostatState {
 
     @Override
     public void setMode(Thermostat thermostat, ThermostatMode mode) {
-        thermostat.setMode(mode);
+        thermostat.setThermostatMode(mode);
         switch (mode) {
             case Auto:
                 autoMode(thermostat);

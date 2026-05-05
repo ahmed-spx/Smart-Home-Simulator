@@ -17,14 +17,7 @@ public class CoolingThermostatState implements IThermostatState{
     
     @Override
     public void setMode(Thermostat thermostat, ThermostatMode mode) {
-        int ambientTemp = thermostat.getAmbientTemperature();
-        int desiredTemp = thermostat.getDesiredTemperature();
-
-        if (ambientTemp > desiredTemp) {
-            Thread.sleep(5000);
-            ambientTemp--;
-        } else {
-            thermostat.changeState(new IdleThermostatState());
-        }
+        thermostat.setThermostatMode(mode);
+        thermostat.changeState(new IdleThermostatState());
     }
 }
