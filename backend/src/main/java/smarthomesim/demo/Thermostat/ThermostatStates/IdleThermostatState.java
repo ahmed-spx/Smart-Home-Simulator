@@ -33,6 +33,8 @@ public class IdleThermostatState implements IThermostatState {
 
     @Override
     public void setTemperature(Thermostat thermostat, int temperature) {
+        thermostat.setThermostatDesiredTemperature(temperature);
+        autoMode(thermostat);
     }
 
     private void autoMode(Thermostat thermostat) {

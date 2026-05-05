@@ -23,5 +23,6 @@ public class CoolingThermostatState implements IThermostatState{
 
     @Override
     public void setTemperature(Thermostat thermostat, int temperature) {
+        thermostat.setThermostatDesiredTemperature(temperature);
     }
 }
