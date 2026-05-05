@@ -38,7 +38,7 @@ public class Thermostat extends Device {
     thermostatState.togglePower(this);
   }
   public void setStateDesiredTemperature(int desiredTemperature) {
-    thermostatState.setMode(this, mode);
+    thermostatState.setTemperature(this, desiredTemperature);
   }
     public void setStateMode(ThermostatMode mode) {
     thermostatState.setMode(this, mode);
