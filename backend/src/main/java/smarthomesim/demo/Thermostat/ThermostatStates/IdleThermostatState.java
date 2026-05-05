@@ -31,6 +31,10 @@ public class IdleThermostatState implements IThermostatState {
         }
     }
 
+    @Override
+    public void setTemperature(Thermostat thermostat, int temperature) {
+    }
+
     private void autoMode(Thermostat thermostat) {
         int ambientTemp = thermostat.getAmbientTemperature();
         int desiredTemp = thermostat.getDesiredTemperature();

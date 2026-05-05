@@ -20,4 +20,8 @@ public class CoolingThermostatState implements IThermostatState{
         thermostat.setThermostatMode(mode);
         thermostat.changeState(new IdleThermostatState());
     }
+
+    @Override
+    public void setTemperature(Thermostat thermostat, int temperature) {
+    }
 }

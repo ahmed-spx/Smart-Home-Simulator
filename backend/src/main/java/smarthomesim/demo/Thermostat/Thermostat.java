@@ -19,17 +19,11 @@ public class Thermostat extends Device {
     this.mode = ThermostatMode.Auto;
   }
 
-  //setters
-  public void togglePower() {
-    thermostatState.togglePower(this);
-  }
-  public void setStateMode(ThermostatMode mode) {
-    thermostatState.setMode(this, mode);
-  }
+  //thermostat setters
   public void setThermostatMode(ThermostatMode mode) {
     this.mode = mode;
   }
-  public void setDesiredTemperature(int desiredTemperature) {
+  public void setThermostatDesiredTemperature(int desiredTemperature) {
     this.desiredTemperature = desiredTemperature;
   }
   public void increaseAmbientTemperature() {
@@ -37,6 +31,17 @@ public class Thermostat extends Device {
   }
   public void decreaseAmbientTemperature() {
     this.ambientTemperature--;
+  }
+
+  //state machine setters
+    public void togglePower() {
+    thermostatState.togglePower(this);
+  }
+  public void setStateDesiredTemperature(int desiredTemperature) {
+    thermostatState.setMode(this, mode);
+  }
+    public void setStateMode(ThermostatMode mode) {
+    thermostatState.setMode(this, mode);
   }
 
   //getters

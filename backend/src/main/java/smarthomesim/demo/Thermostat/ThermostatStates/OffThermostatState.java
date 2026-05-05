@@ -19,4 +19,8 @@ public class OffThermostatState implements IThermostatState {
   public void setMode(Thermostat thermostat, ThermostatMode mode) {
   }
 
+  @Override
+  public void setTemperature(Thermostat thermostat, int temperature) {
+  }
+
 }
