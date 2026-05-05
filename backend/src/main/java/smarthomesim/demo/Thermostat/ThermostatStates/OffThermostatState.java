@@ -15,4 +15,8 @@ public class OffThermostatState implements IThermostatState {
     thermostat.changeState(new IdleThermostatState());
   }
 
+  @Override
+  public void setMode(Thermostat thermostat, ThermostatMode mode) {
+  }
+
 }

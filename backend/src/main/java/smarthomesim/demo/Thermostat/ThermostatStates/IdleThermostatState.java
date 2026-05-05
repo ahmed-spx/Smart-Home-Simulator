@@ -15,30 +15,39 @@ public class IdleThermostatState implements IThermostatState {
         thermostat.changeState(new OffThermostatState());
     }
 
-    public void autoMode(Thermostat thermostat, ThermostatMode mode, int ambientTemp, int desiredTemp) {
-        if (mode == ThermostatMode.Auto) {
-            if (ambientTemp < desiredTemp) {
-                thermostat.changeState(new HeatingThermostatState());
-            } else if (ambientTemp > desiredTemp) {
-                thermostat.changeState(new CoolingThermostatState());
-            }
+    @Override
+    public void setMode(Thermostat thermostat, ThermostatMode mode) {
+        thermostat.setMode(mode);
+        switch (mode) {
+            case Auto:
+                autoMode(thermostat);
+                break;
+            case Cooling:
+                coolingMode(thermostat);
+                break;
+            case Heating:
+                heatingMode(thermostat);
+                break;
         }
     }
 
-    public void coolingMode(Thermostat thermostat, ThermostatMode mode, int ambientTemp, int desiredTemp) {
-        if (mode == ThermostatMode.Cooling) {
-            if (ambientTemp > desiredTemp) {
-                thermostat.changeState(new CoolingThermostatState());
-            }
+    private void autoMode(Thermostat thermostat) {
+        int ambientTemp = thermostat.getAmbientTemperature();
+        int desiredTemp = thermostat.getDesiredTemperature();
+
+        if (ambientTemp < desiredTemp) {
+            thermostat.changeState(new HeatingThermostatState());
+        } else if (ambientTemp > desiredTemp) {
+            thermostat.changeState(new CoolingThermostatState());
         }
     }
 
-    public void heatingMode(Thermostat thermostat, ThermostatMode mode, int ambientTemp, int desiredTemp) {
-        if (mode == ThermostatMode.Heating) {
-            if (ambientTemp < desiredTemp) {
-                thermostat.changeState(new HeatingThermostatState());
-            }
-        }
+    private void coolingMode(Thermostat thermostat) {
+        thermostat.changeState(new CoolingThermostatState());
+    }
+
+    private void heatingMode(Thermostat thermostat) {
+        thermostat.changeState(new HeatingThermostatState());
     }
     
 }

@@ -8,7 +8,7 @@ public class Thermostat extends Device {
   private IThermostatState thermostatState;
   private ThermostatMode mode;
   private int desiredTemperature;
-  private static int ambientTemperature = 65;
+  private int ambientTemperature = 65;
 
   //constructor
   public Thermostat(String id, String name, String location) {
@@ -22,10 +22,7 @@ public class Thermostat extends Device {
   public void togglePower() {
     thermostatState.togglePower(this);
   }
-  public void setDesiredTemp(int temperature){
-    thermostatState.setTemperature(this, temperature);
-  }
-  public void setMode(ThermostatState mode){
+  public void setMode(ThermostatMode mode) {
     thermostatState.setMode(this, mode);
   }
 

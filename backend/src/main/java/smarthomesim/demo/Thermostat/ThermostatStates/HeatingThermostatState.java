@@ -15,7 +15,11 @@ public class HeatingThermostatState implements IThermostatState {
         thermostat.changeState(new OffThermostatState());
     }
     
-    public void heatingMode(Thermostat thermostat, int ambientTemp, int desiredTemp) {
+    @Override
+    public void setMode(Thermostat thermostat, ThermostatMode mode) {
+        int ambientTemp = thermostat.getAmbientTemperature();
+        int desiredTemp = thermostat.getDesiredTemperature();
+
         if (ambientTemp < desiredTemp) {
             Thread.sleep(5000);
             ambientTemp++;
