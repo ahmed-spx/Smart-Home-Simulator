@@ -18,8 +18,7 @@ public class OffFanState implements IFanState {
   }
 
   @Override
-  public void setSpeed(Speed speed) {
-    fan.setSpeed(speed);
+  public void setSpeed(Fan fan, Speed speed) {
   }
   
 }

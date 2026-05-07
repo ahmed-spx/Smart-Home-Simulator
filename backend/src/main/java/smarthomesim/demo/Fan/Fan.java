@@ -19,7 +19,7 @@ public class Fan extends Device {
     this.fanState.togglePower(this);
   }
   public void setSpeed(Speed speed) {
-    this.fanState.setSpeed(speed);
+    this.speed = speed;
   }
 
   //getters

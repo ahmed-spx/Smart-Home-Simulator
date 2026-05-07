@@ -22,10 +22,10 @@ public class Light extends Device {
     lightState.togglePower(this);
   }
   public void setBrightness(int brightness) {
-    lightState.setBrightness(this, brightness);
+    this.brightness = brightness;
   }
   public void setColor(Color color) {
-    lightState.setColor(this, color);
+    this.color = color;
   }
 
   //getters
