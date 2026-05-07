@@ -14,10 +14,15 @@ public class Fan extends Device {
     this.speed = Speed.Off;
   }
 
-  //setters
+  //state machine setters
   public void togglePower() {
     this.fanState.togglePower(this);
   }
+  public void setStateSpeed(Speed speed) {
+    fanState.setSpeed(this, speed);
+  }
+
+  //setters
   public void setSpeed(Speed speed) {
     this.speed = speed;
   }

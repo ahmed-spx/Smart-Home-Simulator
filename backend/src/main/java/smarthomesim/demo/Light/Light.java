@@ -17,10 +17,18 @@ public class Light extends Device {
     this.color = Color.WHITE;
   }
 
-  //setters
+  //state machine setters
   public void togglePower() {
     lightState.togglePower(this);
   }
+  public void setStateBrightness(int brightness) {
+    lightState.setBrightness(this, brightness);
+  }
+  public void setStateColor(Color color) {
+    lightState.setColor(this, color);
+  }
+
+  //setters
   public void setBrightness(int brightness) {
     this.brightness = brightness;
   }
