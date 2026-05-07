@@ -1,6 +1,6 @@
-package smarthomesim.demo.Fan;
-import smarthomesim.demo.Device;
-import smarthomesim.demo.DeviceType;
+package smarthomesim.demo.fan;
+import smarthomesim.demo.device.Device;
+import smarthomesim.demo.device.DeviceType;
 
 public class Fan extends Device {
   //attributes

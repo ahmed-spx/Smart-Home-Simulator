@@ -4,9 +4,9 @@ import java.util.Map;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import smarthomesim.demo.Fan.Fan;
-import smarthomesim.demo.Light.Light;
-import smarthomesim.demo.Thermostat.Thermostat;
+import smarthomesim.demo.fan.Fan;
+import smarthomesim.demo.light.Light;
+import smarthomesim.demo.thermostat.Thermostat;
 
 @SpringBootApplication
 public class DemoApplication {

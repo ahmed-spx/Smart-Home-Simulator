@@ -1,8 +1,8 @@
-package smarthomesim.demo.Thermostat.ThermostatStates;
-import smarthomesim.demo.Thermostat.IThermostatState;
-import smarthomesim.demo.Thermostat.Thermostat;
-import smarthomesim.demo.Thermostat.ThermostatState;
-import smarthomesim.demo.Thermostat.ThermostatMode;
+package smarthomesim.demo.thermostat.thermostatstates;
+import smarthomesim.demo.thermostat.IThermostatState;
+import smarthomesim.demo.thermostat.Thermostat;
+import smarthomesim.demo.thermostat.ThermostatState;
+import smarthomesim.demo.thermostat.ThermostatMode;
 
 public class HeatingThermostatState implements IThermostatState {
 

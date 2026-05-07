@@ -1,4 +1,4 @@
-package smarthomesim.demo.Light;
+package smarthomesim.demo.light;
 import java.awt.Color;
 
 public class OffLight implements ILightState {

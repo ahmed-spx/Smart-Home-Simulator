@@ -1,7 +1,7 @@
-package smarthomesim.demo.Thermostat;
-import smarthomesim.demo.Device;
-import smarthomesim.demo.DeviceType;
-import smarthomesim.demo.Thermostat.ThermostatStates.OffThermostatState;
+package smarthomesim.demo.thermostat;
+import smarthomesim.demo.device.Device;
+import smarthomesim.demo.device.DeviceType;
+import smarthomesim.demo.thermostat.thermostatstates.OffThermostatState;
 
 public class Thermostat extends Device {
   //attributes

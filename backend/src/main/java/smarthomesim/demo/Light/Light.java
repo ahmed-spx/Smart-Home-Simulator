@@ -1,7 +1,7 @@
-package smarthomesim.demo.Light;
+package smarthomesim.demo.light;
 import java.awt.Color;
-import smarthomesim.demo.Device;
-import smarthomesim.demo.DeviceType;
+import smarthomesim.demo.device.Device;
+import smarthomesim.demo.device.DeviceType;
 
 public class Light extends Device {
   //fields

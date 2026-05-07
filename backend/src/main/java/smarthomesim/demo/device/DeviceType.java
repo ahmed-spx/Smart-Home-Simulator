@@ -1,4 +1,4 @@
-package smarthomesim.demo;
+package smarthomesim.demo.device;
 
 public enum DeviceType {
   Light,

@@ -1,4 +1,4 @@
-package smarthomesim.demo;
+package smarthomesim.demo.device;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -6,9 +6,9 @@ import java.util.Map;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import smarthomesim.demo.Fan.Fan;
-import smarthomesim.demo.Light.Light;
-import smarthomesim.demo.Thermostat.Thermostat;
+import smarthomesim.demo.fan.Fan;
+import smarthomesim.demo.light.Light;
+import smarthomesim.demo.thermostat.Thermostat;
 
 @RestController
 @RequestMapping("/api/devices")

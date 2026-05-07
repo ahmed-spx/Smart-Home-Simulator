@@ -1,4 +1,4 @@
-package smarthomesim.demo.Fan;
+package smarthomesim.demo.fan;
 
 public class OnFanState implements IFanState {
   private Fan fan;

@@ -1,4 +1,4 @@
-package smarthomesim.demo.Fan;
+package smarthomesim.demo.fan;
 
 public interface IFanState {
   public FanState getState();

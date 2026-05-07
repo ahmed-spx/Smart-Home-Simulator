@@ -1,4 +1,4 @@
-package smarthomesim.demo.Light;
+package smarthomesim.demo.light;
 
 public enum LightState {
   Off,

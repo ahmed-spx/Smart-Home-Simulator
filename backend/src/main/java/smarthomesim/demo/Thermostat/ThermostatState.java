@@ -1,4 +1,4 @@
-package smarthomesim.demo.Thermostat;
+package smarthomesim.demo.thermostat;
 
 public enum ThermostatState {
   Off,
