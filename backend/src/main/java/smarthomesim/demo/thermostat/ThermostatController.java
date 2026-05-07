@@ -40,7 +40,7 @@ public class ThermostatController {
   public Map<String, Object> setMode(@PathVariable String id,
                                      @RequestBody Map<String, String> body) {
     Thermostat t = (Thermostat) devices.get(id);
-    t.setThermostatMode(ThermostatMode.valueOf(body.get("mode")));
+    t.setStateMode(ThermostatMode.valueOf(body.get("mode")));
     return thermostatInfo(t);
   }
 
@@ -49,7 +49,7 @@ public class ThermostatController {
   public Map<String, Object> setTemperature(@PathVariable String id,
                                             @RequestBody Map<String, Integer> body) {
     Thermostat t = (Thermostat) devices.get(id);
-    t.setThermostatDesiredTemperature(body.get("temperature"));
+    t.setStateDesiredTemperature(body.get("temperature"));
     return thermostatInfo(t);
   }
 

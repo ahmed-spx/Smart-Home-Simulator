@@ -40,7 +40,7 @@ public class LightController {
   public Map<String, Object> setBrightness(@PathVariable String id,
                                            @RequestBody Map<String, Integer> body) {
     Light light = (Light) devices.get(id);
-    light.setBrightness(body.get("brightness"));
+    light.setStateBrightness(body.get("brightness"));
     return lightInfo(light);
   }
 

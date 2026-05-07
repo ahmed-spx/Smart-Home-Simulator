@@ -40,7 +40,7 @@ public class FanController {
   public Map<String, Object> setSpeed(@PathVariable String id,
                                       @RequestBody Map<String, String> body) {
     Fan fan = (Fan) devices.get(id);
-    fan.setSpeed(Speed.valueOf(body.get("speed")));
+    fan.setStateSpeed(Speed.valueOf(body.get("speed")));
     return fanInfo(fan);
   }
 
