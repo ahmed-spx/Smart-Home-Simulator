@@ -4,6 +4,8 @@ import java.util.Map;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+
+import smarthomesim.demo.device.Device;
 import smarthomesim.demo.fan.Fan;
 import smarthomesim.demo.light.Light;
 import smarthomesim.demo.thermostat.Thermostat;
@@ -19,13 +21,13 @@ public class DemoApplication {
 
 		Map<String, Device> devices = new HashMap<>();
 
-		Light Light = new Light("light 1");
-		Fan Fan = new Fan("fan 1");
-		Thermostat Thermostat = new Thermostat("thermo 1");
+		Light light = new Light("light-1", "Light 1", "Living Room");
+		Fan fan = new Fan("fan-1", "Fan 1", "Living Room");
+		Thermostat thermostat = new Thermostat("thermo-1", "Thermostat 1", "Living Room");
 
-		devices.put(Light.getId(), Light);
-		devices.put(Fan.getId(), Fan);
-		devices.put(Thermostat.getId(), Thermostat);
+		devices.put(light.getId(), light);
+		devices.put(fan.getId(), fan);
+		devices.put(thermostat.getId(), thermostat);
 
 		return devices;
 	}
