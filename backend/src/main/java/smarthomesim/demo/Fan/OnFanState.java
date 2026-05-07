@@ -1,11 +1,6 @@
 package smarthomesim.demo.fan;
 
 public class OnFanState implements IFanState {
-  private Fan fan;
-
-  public OnFanState(Fan fan) {
-    this.fan = fan;
-  }
 
   @Override
   public FanState getState() {
@@ -14,7 +9,7 @@ public class OnFanState implements IFanState {
 
   @Override
   public void togglePower(Fan fan) {
-    fan.changeState(new OffFanState(fan));
+    fan.changeState(new OffFanState());
   }
 
   @Override

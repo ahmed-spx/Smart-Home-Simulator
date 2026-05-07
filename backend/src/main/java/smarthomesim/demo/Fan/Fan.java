@@ -10,7 +10,7 @@ public class Fan extends Device {
   //constructor
   public Fan(String id, String name, String location) {
     super(id, name, location, DeviceType.Fan);
-    this.fanState = new OffFanState(this);
+    this.fanState = new OffFanState();
     this.speed = Speed.Off;
   }
 
