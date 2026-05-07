@@ -18,12 +18,18 @@ public class CoolingThermostatState implements IThermostatState{
     
     @Override
     public void setMode(Thermostat thermostat, ThermostatMode mode) {
-        thermostat.setThermostatMode(mode);
-        thermostat.changeState(new IdleThermostatState());
+        // a Do while loop to continue comparing desired and ambient till they equal?
+        // int ambientTemp = thermostat.getAmbientTemperature();
+        // int desiredTemp = thermostat.getDesiredTemperature();
+
+        // if (ambientTemp == desiredTemp) {
+        //     thermostat.changeState(new IdleThermostatState());
+        // }
     }
 
     @Override
     public void setTemperature(Thermostat thermostat, int temperature) {
         thermostat.setThermostatDesiredTemperature(temperature);
+        setMode(thermostat, thermostat.getMode());
     }
 }

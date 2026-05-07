@@ -50,11 +50,21 @@ public class IdleThermostatState implements IThermostatState {
     }
 
     private void coolingMode(Thermostat thermostat) {
-        thermostat.changeState(new CoolingThermostatState());
+        int ambientTemp = thermostat.getAmbientTemperature();
+        int desiredTemp = thermostat.getDesiredTemperature();
+
+        if (ambientTemp > desiredTemp) {
+            thermostat.changeState(new CoolingThermostatState());
+        }
     }
 
     private void heatingMode(Thermostat thermostat) {
-        thermostat.changeState(new HeatingThermostatState());
+        int ambientTemp = thermostat.getAmbientTemperature();
+        int desiredTemp = thermostat.getDesiredTemperature();
+        
+        if (ambientTemp < desiredTemp) {
+            thermostat.changeState(new HeatingThermostatState());
+        }
     }
     
 }

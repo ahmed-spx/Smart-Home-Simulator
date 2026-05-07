@@ -33,17 +33,6 @@ public class Thermostat extends Device {
     this.ambientTemperature--;
   }
 
-  //state machine setters
-    public void togglePower() {
-    thermostatState.togglePower(this);
-  }
-  public void setStateDesiredTemperature(int desiredTemperature) {
-    thermostatState.setTemperature(this, desiredTemperature);
-  }
-    public void setStateMode(ThermostatMode mode) {
-    thermostatState.setMode(this, mode);
-  }
-
   //getters
   public ThermostatState getThermostatState() {
     return thermostatState.getState();
