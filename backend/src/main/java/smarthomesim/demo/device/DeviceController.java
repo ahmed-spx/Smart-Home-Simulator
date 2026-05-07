@@ -1,0 +1,52 @@
+package smarthomesim.demo;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import smarthomesim.demo.Fan.Fan;
+import smarthomesim.demo.Light.Light;
+import smarthomesim.demo.Thermostat.Thermostat;
+
+@RestController
+@RequestMapping("/api/devices")
+
+public class DeviceController {
+
+  private final Map<String, Device> devices;
+
+    // constructor: Spring will inject the device hub
+  public DeviceController(Map<String, Device> devices) {
+    this.devices = devices;
+  }
+
+  // GET list of all devices with their info
+  @GetMapping
+  public List<Map<String, Object>> listDevices() {
+    List<Map<String, Object>> result = new ArrayList<>();
+    for (Device d : devices.values()) {
+      Map<String, Object> info = new HashMap<>();
+      info.put("id", d.getId());
+      info.put("name", d.getName());
+      info.put("location", d.getLocation());
+      info.put("type", d.getType());
+
+      if (d instanceof Light l) {
+        info.put("state", l.getLightState());
+        info.put("brightness", l.getBrightness());
+      } else if (d instanceof Fan f) {
+        info.put("state", f.getFanState());
+        info.put("speed", f.getSpeed());
+      } else if (d instanceof Thermostat t) {
+        info.put("state", t.getThermostatState());
+        info.put("mode", t.getMode());
+        info.put("desiredTemperature", t.getDesiredTemperature());
+        info.put("ambientTemperature", t.getAmbientTemperature());
+      }
+      result.add(info);
+    }
+    return result;
+  }
+}
