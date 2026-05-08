@@ -44,6 +44,7 @@ public class DeviceController {
       } else if (d instanceof Thermostat t) {
         info.put("state", t.getThermostatState());
         info.put("mode", t.getMode());
+        info.put("multiplier", t.getMultiplier());
         info.put("desiredTemperature", t.getDesiredTemperature());
         info.put("ambientTemperature", t.getAmbientTemperature());
       } else if (d instanceof DoorLock dl) {
