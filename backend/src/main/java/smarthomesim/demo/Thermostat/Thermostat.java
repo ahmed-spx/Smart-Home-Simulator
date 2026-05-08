@@ -1,6 +1,8 @@
 package smarthomesim.demo.thermostat;
 import smarthomesim.demo.device.Device;
 import smarthomesim.demo.device.DeviceType;
+import smarthomesim.demo.thermostat.modes.ThermostatModeStrategy;
+import smarthomesim.demo.thermostat.modes.ThermostatModes;
 import smarthomesim.demo.thermostat.thermostatstates.OffThermostatState;
 
 public class Thermostat extends Device {
@@ -11,6 +13,8 @@ public class Thermostat extends Device {
   private int ambientTemperature;
   private Multiplier multiplier;
   private int counter;
+  private ThermostatModes modes;
+
 
   //constructor
   public Thermostat(String id, String name, String location) {
@@ -23,6 +27,18 @@ public class Thermostat extends Device {
     this.counter = 0;
   }
   
+// strategy registry wiring
+  public void setModes(ThermostatModes modes) {
+    this.modes = modes;
+  }
+  public ThermostatModeStrategy currentModeStrategy() {
+    if (modes == null) {
+      throw new IllegalStateException("ThermostatModes not set on " + getId());
+    }
+    return modes.forMode(this.mode);
+  }
+
+
   // tick counter
   public void tick() {
     counter++;

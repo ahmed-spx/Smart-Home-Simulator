@@ -16,6 +16,7 @@ import smarthomesim.demo.fan.*;
 import smarthomesim.demo.light.*;
 import smarthomesim.demo.thermostat.*;
 import smarthomesim.demo.thermostat.thermostatstates.*;
+import smarthomesim.demo.thermostat.modes.ThermostatModes;
 
 @Component
 public class DeviceStore {
@@ -23,6 +24,11 @@ public class DeviceStore {
   private static final File STATE_FILE = new File("data/state.json");
   private final ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
   private Map<String, Device> hub;
+  private final ThermostatModes modes;
+
+  public DeviceStore(ThermostatModes modes) {
+    this.modes = modes;
+  }
 
   public Map<String, Device> load() {
     if (!STATE_FILE.exists()) {
@@ -92,6 +98,7 @@ public class DeviceStore {
       }
       case "Thermostat" -> {
         Thermostat t = new Thermostat(s.id(), s.name(), s.location());
+        t.setModes(modes);
         t.changeState(thermostatStateFor(s.state()));
         t.setThermostatMode(ThermostatMode.valueOf(s.mode()));
         t.setMultiplier(Multiplier.valueOf(s.multiplier()));
@@ -119,11 +126,15 @@ public class DeviceStore {
 
   private Map<String, Device> seed() {
     Map<String, Device> m = new LinkedHashMap<>();
+    // create the thermostat separately so we can set its modes before putting it in the hub cuz "strategy pattern"
+    Thermostat thermo1 = new Thermostat("thermo-1", "Thermostat", "Living Room");
+    thermo1.setModes(modes);
+
     // Living Room
     m.put("light-1", new Light("light-1", "Overhead Light", "Living Room"));
     m.put("light-2", new Light("light-2", "Floor Lamp", "Living Room"));
     m.put("fan-1", new Fan("fan-1", "Ceiling Fan", "Living Room"));
-    m.put("thermo-1", new Thermostat("thermo-1", "Thermostat", "Living Room"));
+    m.put("thermo-1", thermo1);
     m.put("lock-1", new DoorLock("lock-1", "Front Door", "Living Room"));
 
     // Kitchen
