@@ -1,0 +1,9 @@
+meta {
+  name: Toggle thermostat
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/thermostats/{{thermostatId}}/toggle
+}

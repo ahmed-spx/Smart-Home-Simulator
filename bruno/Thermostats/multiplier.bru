@@ -1,0 +1,16 @@
+meta {
+  name: Set multiplier
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/api/thermostats/{{thermostatId}}/multiplier
+  body: json
+}
+
+body:json {
+  {
+    "multiplier": "x10"
+  }
+}

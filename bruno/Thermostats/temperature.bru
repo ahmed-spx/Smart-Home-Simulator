@@ -1,0 +1,16 @@
+meta {
+  name: Set temperature
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/thermostats/{{thermostatId}}/temperature
+  body: json
+}
+
+body:json {
+  {
+    "temperature": 75
+  }
+}

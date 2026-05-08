@@ -1,0 +1,16 @@
+meta {
+  name: Set mode
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/thermostats/{{thermostatId}}/mode
+  body: json
+}
+
+body:json {
+  {
+    "mode": "Auto"
+  }
+}

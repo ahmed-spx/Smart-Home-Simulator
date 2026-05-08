@@ -1,0 +1,16 @@
+meta {
+  name: Set fan speed
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/fans/{{fanId}}/speed
+  body: json
+}
+
+body:json {
+  {
+    "speed": "Medium"
+  }
+}

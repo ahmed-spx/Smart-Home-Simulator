@@ -53,12 +53,12 @@ public class ThermostatController {
     return thermostatInfo(t);
   }
   
-  // POST for simulation speed
-  @PostMapping("/{id}/speed")
-  public Map<String, Object> setSpeed(@PathVariable String id,
-                                      @RequestBody Map<String, String> body) {
+  // POST for multiplier
+  @PostMapping("/{id}/multiplier")
+  public Map<String, Object> setMultiplier(@PathVariable String id,
+                                           @RequestBody Map<String, String> body) {
     Thermostat t = (Thermostat) devices.get(id);
-    t.setMultiplier(Multiplier.valueOf(body.get("speed")));
+    t.setMultiplier(Multiplier.valueOf(body.get("multiplier")));
     return thermostatInfo(t);
   }
 

@@ -4,7 +4,7 @@ import { Slider } from 'primereact/slider';
 import { CardShell } from './CardShell';
 import {
   toggleThermostat, setThermostatMode,
-  setThermostatTemperature, setThermostatSpeed,
+  setThermostatTemperature, setThermostatMultiplier,
 } from '../api/devices';
 
 const modeOptions = [
@@ -13,7 +13,7 @@ const modeOptions = [
   { label: 'Auto', value: 'Auto' },
 ];
 
-const simSpeedOptions = [
+const multiplierOptions = [
   { label: '1x', value: 'x1' },
   { label: '2x', value: 'x2' },
   { label: '5x', value: 'x5' },
@@ -54,8 +54,8 @@ export function ThermostatCard({ device, onUpdate }) {
       </div>
       <div className="control-row">
         <span className="control-label">Multiplier</span>
-        <SelectButton value={device.multiplier} options={simSpeedOptions}
-          onChange={async (e) => e.value && onUpdate(await setThermostatSpeed(device.id, e.value))} />
+        <SelectButton value={device.multiplier} options={multiplierOptions}
+          onChange={async (e) => e.value && onUpdate(await setThermostatMultiplier(device.id, e.value))} />
       </div>
     </CardShell>
   );
