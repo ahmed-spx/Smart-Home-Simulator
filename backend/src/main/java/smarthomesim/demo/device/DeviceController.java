@@ -6,9 +6,11 @@ import java.util.Map;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import smarthomesim.demo.fan.Fan;
 import smarthomesim.demo.light.Light;
 import smarthomesim.demo.thermostat.Thermostat;
+import smarthomesim.demo.doorlock.DoorLock;
 
 @RestController
 @RequestMapping("/api/devices")
@@ -44,6 +46,8 @@ public class DeviceController {
         info.put("mode", t.getMode());
         info.put("desiredTemperature", t.getDesiredTemperature());
         info.put("ambientTemperature", t.getAmbientTemperature());
+      } else if (d instanceof DoorLock dl) {
+        info.put("state", dl.getDoorLockState());
       }
       result.add(info);
     }

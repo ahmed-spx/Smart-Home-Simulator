@@ -4,6 +4,7 @@ import {
   toggleLight, setLightBrightness,
   toggleFan, setFanSpeed,
   toggleThermostat, setThermostatMode, setThermostatTemperature, setThermostatSpeed,
+  toggleDoorLock,
 } from './api/devices';
 import './App.css';
 
@@ -44,6 +45,9 @@ function App() {
         }
         if (device.type === 'Thermostat') {
           return <ThermostatCard key={device.id} device={device} onUpdate={replaceDevice} />;
+        }
+        if (device.type === 'Lock') {
+          return <DoorLockCard key={device.id} device={device} onUpdate={replaceDevice} />;
         }
         return null;
       })}
@@ -145,5 +149,17 @@ function ThermostatCard({ device, onUpdate }) {
   );
 }
 
+function DoorLockCard({ device, onUpdate }) {
+  const isLocked = device.state === 'Locked';
+  return (
+    <Card>
+      <h2>{device.name} <small>({device.location})</small></h2>
+      <p>State: <b>{device.state}</b></p>
+      <button onClick={async () => onUpdate(await toggleDoorLock(device.id))}>
+        {isLocked ? 'Unlock' : 'Lock'}
+      </button>
+    </Card>
+  );
+}
 
 export default App;

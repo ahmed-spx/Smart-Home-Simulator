@@ -45,3 +45,6 @@ export const setThermostatTemperature = (id, temperature) =>
 
 export const setThermostatSpeed = (id, speed) =>
   postJson(`${BASE_URL}/thermostats/${id}/speed`, { speed });
+
+export const toggleDoorLock = (id) =>
+  postJson(`${BASE_URL}/doorlocks/${id}/toggle`);
