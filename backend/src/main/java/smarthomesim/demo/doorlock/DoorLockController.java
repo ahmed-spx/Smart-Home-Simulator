@@ -6,7 +6,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import smarthomesim.demo.audit.AuditLog;
 import smarthomesim.demo.device.Device;
+import smarthomesim.demo.persistence.DeviceStore;
 
 @RestController
 @RequestMapping("/api/doorlocks")
@@ -14,10 +17,14 @@ import smarthomesim.demo.device.Device;
 public class DoorLockController {
 
   private final Map<String, Device> devices;
+  private final DeviceStore store;
+  private final AuditLog auditLog;
 
   // constructor: Spring will inject the device hub
-  public DoorLockController(Map<String, Device> devices) {
+  public DoorLockController(Map<String, Device> devices, DeviceStore store, AuditLog auditLog) {
     this.devices = devices;
+    this.store = store;
+    this.auditLog = auditLog;
   }
 
   // GET info about a door lock
@@ -31,6 +38,8 @@ public class DoorLockController {
   public Map<String, Object> toggleDoorLock(@PathVariable String id) {
     DoorLock doorLock = (DoorLock) devices.get(id);
     doorLock.toggleLock();
+    auditLog.record(id, "toggle");
+    store.save();
     return doorLockInfo(doorLock);
   }
 

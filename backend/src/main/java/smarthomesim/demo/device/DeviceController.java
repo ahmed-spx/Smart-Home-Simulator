@@ -4,12 +4,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import smarthomesim.demo.fan.Fan;
 import smarthomesim.demo.light.Light;
 import smarthomesim.demo.thermostat.Thermostat;
+import smarthomesim.demo.audit.AuditEntry;
+import smarthomesim.demo.audit.AuditLog;
 import smarthomesim.demo.doorlock.DoorLock;
 
 @RestController
@@ -18,10 +21,12 @@ import smarthomesim.demo.doorlock.DoorLock;
 public class DeviceController {
 
   private final Map<String, Device> devices;
+  private final AuditLog auditLog;
 
     // constructor: Spring will inject the device hub
-  public DeviceController(Map<String, Device> devices) {
+  public DeviceController(Map<String, Device> devices, AuditLog auditLog) {
     this.devices = devices;
+    this.auditLog = auditLog;
   }
 
   // GET list of all devices with their info
@@ -54,5 +59,11 @@ public class DeviceController {
       result.add(info);
     }
     return result;
+  }
+
+  // GET history for a device
+  @GetMapping("/{id}/history")
+  public List<AuditEntry> getHistory(@PathVariable String id) {
+    return auditLog.historyFor(id);
   }
 }

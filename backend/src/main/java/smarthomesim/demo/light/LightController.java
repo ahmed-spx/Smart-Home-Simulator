@@ -7,7 +7,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import smarthomesim.demo.audit.AuditLog;
 import smarthomesim.demo.device.Device;
+import smarthomesim.demo.persistence.DeviceStore;
+
 import java.awt.Color;
 
 @RestController
@@ -15,11 +19,16 @@ import java.awt.Color;
 
 public class LightController {
 
+  // fields
   private final Map<String, Device> devices;
+  private final DeviceStore store;
+  private final AuditLog auditLog;
 
   // constructor: Spring will inject the device hub
-  public LightController(Map<String, Device> devices) {
+  public LightController(Map<String, Device> devices, DeviceStore store, AuditLog auditLog) {
     this.devices = devices;
+    this.store = store;
+    this.auditLog = auditLog;
   }
 
   // GET info about a light
@@ -33,24 +42,30 @@ public class LightController {
   public Map<String, Object> toggleLight(@PathVariable String id) {
     Light light = (Light) devices.get(id);
     light.togglePower();
+    auditLog.record(id, "toggle");
+    store.save();
     return lightInfo(light);
   }
 
   // POST for brightness
   @PostMapping("/{id}/brightness")
-  public Map<String, Object> setBrightness(@PathVariable String id,
-                                           @RequestBody Map<String, Integer> body) {
+  public Map<String, Object> setBrightness(@PathVariable String id, @RequestBody Map<String, Integer> body) {
     Light light = (Light) devices.get(id);
-    light.setStateBrightness(body.get("brightness"));
+    int brightness = body.get("brightness");
+    light.setStateBrightness(brightness);
+    auditLog.record(id, "setBrightness" + brightness);
+    store.save();
     return lightInfo(light);
   }
 
   // POST for color
   @PostMapping("/{id}/color")
-  public Map<String, Object> setColor(@PathVariable String id,
-                                      @RequestBody Map<String, String> body) {
+  public Map<String, Object> setColor(@PathVariable String id, @RequestBody Map<String, String> body) {
     Light light = (Light) devices.get(id);
-    light.setStateColor(Color.decode(body.get("color")));
+    String colorhex = body.get("color");
+    light.setStateColor(Color.decode(colorhex));
+    auditLog.record(id, "setColor" + colorhex);
+    store.save();
     return lightInfo(light);
   }
 

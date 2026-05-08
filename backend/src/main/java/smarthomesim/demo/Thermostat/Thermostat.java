@@ -61,6 +61,9 @@ public class Thermostat extends Device {
     this.multiplier = multiplier;
     this.counter = 0;
   }
+  public void setAmbientTemperature(int ambientTemperature) {
+    this.ambientTemperature = ambientTemperature;
+  }
 
   //getters
   public ThermostatState getThermostatState() {
