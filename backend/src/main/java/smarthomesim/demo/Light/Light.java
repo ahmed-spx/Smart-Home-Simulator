@@ -43,8 +43,8 @@ public class Light extends Device {
   public int getBrightness() {
     return brightness;
   }
-  public Color getColor() {
-    return color;
+  public String getColorHex() {
+    return String.format("#%02X%02X%02X", color.getRed(), color.getGreen(), color.getBlue());
   }
 
   //transition

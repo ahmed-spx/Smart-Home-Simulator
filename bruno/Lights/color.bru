@@ -1,0 +1,16 @@
+meta {
+  name: Set color
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/lights/{{lightId}}/color
+  body: json
+}
+
+body:json {
+  {
+    "color": "#FF8800"
+  }
+}

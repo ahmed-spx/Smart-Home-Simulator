@@ -19,6 +19,11 @@ export function LightCard({ device, onUpdate }) {
           onChange={async (e) => onUpdate(await setLightBrightness(device.id, e.value))} />
         <span className="control-value">{device.brightness}%</span>
       </div>
+      <div className="control-row">
+        <span className="control-label">Color</span>
+        <ColorPicker value={colorNoHash} disabled={!isOn}
+          onChange={async (e) => onUpdate(await setLightColor(device.id, '#' + e.value))} />
+      </div>
     </CardShell>
   );
 }

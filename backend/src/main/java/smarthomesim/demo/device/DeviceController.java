@@ -38,6 +38,7 @@ public class DeviceController {
       if (d instanceof Light l) {
         info.put("state", l.getLightState());
         info.put("brightness", l.getBrightness());
+        info.put("color", l.getColorHex());
       } else if (d instanceof Fan f) {
         info.put("state", f.getFanState());
         info.put("speed", f.getSpeed());

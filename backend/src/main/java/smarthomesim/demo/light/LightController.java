@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import smarthomesim.demo.device.Device;
+import java.awt.Color;
 
 @RestController
 @RequestMapping("/api/lights")
@@ -44,6 +45,15 @@ public class LightController {
     return lightInfo(light);
   }
 
+  // POST for color
+  @PostMapping("/{id}/color")
+  public Map<String, Object> setColor(@PathVariable String id,
+                                      @RequestBody Map<String, String> body) {
+    Light light = (Light) devices.get(id);
+    light.setStateColor(Color.decode(body.get("color")));
+    return lightInfo(light);
+  }
+
   // helper: shape the JSON the frontend receives
   private Map<String, Object> lightInfo(Light l) {
     Map<String, Object> m = new HashMap<>();
@@ -53,6 +63,7 @@ public class LightController {
     m.put("type", l.getType());
     m.put("state", l.getLightState());
     m.put("brightness", l.getBrightness());
+    m.put("color", l.getColorHex());
     return m;
   }
 }

@@ -26,6 +26,9 @@ export const toggleLight = (id) =>
 export const setLightBrightness = (id, brightness) =>
   postJson(`${BASE_URL}/lights/${id}/brightness`, { brightness });
 
+export const setLightColor = (id, color) =>
+  postJson(`${BASE_URL}/lights/${id}/color`, { color });
+
 // Fan APIs
 export const toggleFan = (id) =>
   postJson(`${BASE_URL}/fans/${id}/toggle`);
@@ -46,5 +49,6 @@ export const setThermostatTemperature = (id, temperature) =>
 export const setThermostatMultiplier = (id, multiplier) =>
   postJson(`${BASE_URL}/thermostats/${id}/multiplier`, { multiplier });
 
+// DoorLock API
 export const toggleDoorLock = (id) =>
   postJson(`${BASE_URL}/doorlocks/${id}/toggle`);
