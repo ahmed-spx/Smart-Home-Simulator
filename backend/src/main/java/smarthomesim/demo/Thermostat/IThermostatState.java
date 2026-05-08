@@ -5,4 +5,5 @@ public interface IThermostatState {
   void togglePower(Thermostat thermostat);
   void setMode(Thermostat thermostat, ThermostatMode mode);
   void setTemperature(Thermostat thermostat, int temperature);
+  void tick(Thermostat thermostat);
 }

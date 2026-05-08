@@ -16,6 +16,7 @@ public class IdleThermostatState implements IThermostatState {
         thermostat.changeState(new OffThermostatState());
     }
 
+    // Idle is central that decides to go to cooling or heating because ambient != desired
     @Override
     public void setMode(Thermostat thermostat, ThermostatMode mode) {
         thermostat.setThermostatMode(mode);
@@ -38,6 +39,12 @@ public class IdleThermostatState implements IThermostatState {
         setMode(thermostat, thermostat.getMode());
     }
 
+    // doesnt need tick because ambient = desired
+    @Override
+    public void tick(Thermostat thermostat) {
+    }
+
+    // thermostat modes
     private void autoMode(Thermostat thermostat) {
         int ambientTemp = thermostat.getAmbientTemperature();
         int desiredTemp = thermostat.getDesiredTemperature();

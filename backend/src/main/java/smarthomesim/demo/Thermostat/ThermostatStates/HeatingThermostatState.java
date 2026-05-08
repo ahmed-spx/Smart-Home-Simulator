@@ -18,12 +18,20 @@ public class HeatingThermostatState implements IThermostatState {
     
     @Override
     public void setMode(Thermostat thermostat, ThermostatMode mode) {
-        //working on it too
     }
 
     @Override
     public void setTemperature(Thermostat thermostat, int temperature) {
         thermostat.setThermostatDesiredTemperature(temperature);
         setMode(thermostat, thermostat.getMode());
+    }
+
+    @Override
+    public void tick(Thermostat thermostat) {
+        if (thermostat.getAmbientTemperature() < thermostat.getDesiredTemperature()) {
+            thermostat.increaseAmbientTemperature();
+        } else {
+            thermostat.changeState(new IdleThermostatState());
+        }
     }
 }

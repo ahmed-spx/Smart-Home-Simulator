@@ -9,6 +9,8 @@ public class Thermostat extends Device {
   private ThermostatMode mode;
   private int desiredTemperature;
   private int ambientTemperature;
+  private Multiplier multiplier;
+  private int counter;
 
   //constructor
   public Thermostat(String id, String name, String location) {
@@ -17,8 +19,20 @@ public class Thermostat extends Device {
     this.desiredTemperature = 70;
     this.ambientTemperature = 65;
     this.mode = ThermostatMode.Auto;
+    this.multiplier = Multiplier.x1;
+    this.counter = 0;
   }
   
+  // tick counter
+  public void tick() {
+    counter++;
+    int ticksPerTimeInterval = 10 / multiplier.getMultiplierValue();
+    if (counter >= ticksPerTimeInterval) {
+      counter = 0;
+      thermostatState.tick(this);
+    }
+  }
+
   //state machine setters
   public void togglePower() {
     thermostatState.togglePower(this);
@@ -43,6 +57,10 @@ public class Thermostat extends Device {
   public void decreaseAmbientTemperature() {
     this.ambientTemperature--;
   }
+  public void setMultiplier(Multiplier multiplier) {
+    this.multiplier = multiplier;
+    this.counter = 0;
+  }
 
   //getters
   public ThermostatState getThermostatState() {
@@ -56,6 +74,9 @@ public class Thermostat extends Device {
   }
   public ThermostatMode getMode() {
     return mode;
+  }
+  public Multiplier getMultiplier() {
+    return multiplier;
   }
 
   //transition

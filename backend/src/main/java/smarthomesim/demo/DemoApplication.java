@@ -4,6 +4,7 @@ import java.util.Map;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import smarthomesim.demo.device.Device;
 import smarthomesim.demo.fan.Fan;
@@ -11,6 +12,7 @@ import smarthomesim.demo.light.Light;
 import smarthomesim.demo.thermostat.Thermostat;
 
 @SpringBootApplication
+@EnableScheduling
 public class DemoApplication {
 
 	public static void main(String[] args) {

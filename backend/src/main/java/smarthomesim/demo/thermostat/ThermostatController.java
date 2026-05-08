@@ -52,6 +52,15 @@ public class ThermostatController {
     t.setStateDesiredTemperature(body.get("temperature"));
     return thermostatInfo(t);
   }
+  
+  // POST for simulation speed
+  @PostMapping("/{id}/speed")
+  public Map<String, Object> setSpeed(@PathVariable String id,
+                                      @RequestBody Map<String, String> body) {
+    Thermostat t = (Thermostat) devices.get(id);
+    t.setMultiplier(Multiplier.valueOf(body.get("speed")));
+    return thermostatInfo(t);
+  }
 
   private Map<String, Object> thermostatInfo(Thermostat t) {
     Map<String, Object> m = new HashMap<>();
@@ -63,6 +72,7 @@ public class ThermostatController {
     m.put("mode", t.getMode());
     m.put("desiredTemperature", t.getDesiredTemperature());
     m.put("ambientTemperature", t.getAmbientTemperature());
+    m.put("multiplier", t.getMultiplier());
     return m;
   }
 }

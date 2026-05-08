@@ -3,7 +3,7 @@ import {
   getAllDevices,
   toggleLight, setLightBrightness,
   toggleFan, setFanSpeed,
-  toggleThermostat, setThermostatMode, setThermostatTemperature,
+  toggleThermostat, setThermostatMode, setThermostatTemperature, setThermostatSpeed,
 } from './api/devices';
 import './App.css';
 
@@ -16,6 +16,13 @@ function App() {
     getAllDevices()
       .then(setDevices)
       .catch((e) => setError(e.message));
+  }, []);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      getAllDevices().then(setDevices).catch(() => {});
+    }, 500);
+    return () => clearInterval(intervalId);
   }, []);
 
   // Helper: replace one device in the list with the updated copy returned
@@ -86,30 +93,57 @@ function FanCard({ device, onUpdate }) {
 }
 
 function ThermostatCard({ device, onUpdate }) {
+  const isOn = device.state !== 'Off';
+  const modeButton = (label) => (
+    <button
+      key={label}
+      onClick={async () => onUpdate(await setThermostatMode(device.id, label))}
+      style={{
+        marginRight: 6,
+        fontWeight: device.mode === label ? 'bold' : 'normal',
+        background: device.mode === label ? '#d0e6ff' : '',
+      }}
+    >
+      {label}
+    </button>
+  );
+
   return (
     <Card>
       <h2>{device.name} <small>({device.location})</small></h2>
       <p>
         State: <b>{device.state}</b> &nbsp;
-        Mode: <b>{device.mode}</b> &nbsp;
         Desired: <b>{device.desiredTemperature}°F</b> &nbsp;
-        Ambient: <b>{device.ambientTemperature}°F</b>
+        Ambient: <b>{device.ambientTemperature}°F</b> &nbsp;
+        Speed: <b>{device.multiplier}</b>
       </p>
-      <button onClick={async () => onUpdate(await toggleThermostat(device.id))}>Toggle</button>{' '}
-      <select
-        value={device.mode}
-        onChange={async (e) => onUpdate(await setThermostatMode(device.id, e.target.value))}
+      <button
+        onClick={async () => onUpdate(await toggleThermostat(device.id))}
+        style={{ marginRight: 12, fontWeight: 'bold' }}
       >
-        <option>Auto</option>
-        <option>Heating</option>
-        <option>Cooling</option>
-      </select>{' '}
+        {isOn ? 'On' : 'Off'}
+      </button>
+      {['Auto', 'Heating', 'Cooling'].map(modeButton)}
+      {' '}
       <input
         type="number" value={device.desiredTemperature}
         onChange={async (e) => onUpdate(await setThermostatTemperature(device.id, Number(e.target.value)))}
-      />
+      />{' '}
+      <label>
+        Sim speed:{' '}
+        <select
+          value={device.multiplier}
+          onChange={async (e) => onUpdate(await setThermostatSpeed(device.id, e.target.value))}
+        >
+          <option value="x1">1x</option>
+          <option value="x2">2x</option>
+          <option value="x5">5x</option>
+          <option value="x10">10x</option>
+        </select>
+      </label>
     </Card>
   );
 }
+
 
 export default App;
