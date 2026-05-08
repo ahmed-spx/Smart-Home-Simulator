@@ -124,12 +124,16 @@ public class DeviceStore {
     m.put("light-2", new Light("light-2", "Floor Lamp", "Living Room"));
     m.put("fan-1", new Fan("fan-1", "Ceiling Fan", "Living Room"));
     m.put("thermo-1", new Thermostat("thermo-1", "Thermostat", "Living Room"));
+    m.put("lock-1", new DoorLock("lock-1", "Front Door", "Living Room"));
+
     // Kitchen
     m.put("light-3", new Light("light-3", "Under-Cabinet Lights", "Kitchen"));
     m.put("fan-2", new Fan("fan-2", "Exhaust Fan", "Kitchen"));
+    m.put("lock-2", new DoorLock("lock-2", "Back Door", "Kitchen"));
+
     // Bedroom
     m.put("light-4", new Light("light-4", "Bedside Lamp", "Bedroom"));
-    m.put("lock-1", new DoorLock("lock-1", "Front Door", "Bedroom"));
+    m.put("lock-3", new DoorLock("lock-3", "Room Door", "Bedroom"));
     return m;
   }
 }
