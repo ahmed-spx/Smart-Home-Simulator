@@ -9,11 +9,11 @@ const speedOptions = [
   { label: 'High', value: 'High' },
 ];
 
-export function FanCard({ device, onUpdate }) {
+export function FanCard({ device, onUpdate, onRemove }) {
   const isOn = device.state === 'On';
   return (
     <CardShell icon="pi-cog" name={device.name} typeLabel="Fan"
-               isActive={isOn} statusLabel={device.state}>
+               isActive={isOn} statusLabel={device.state} onRemove={onRemove}>
       <div className="control-row">
         <span className="control-label">Power</span>
         <InputSwitch checked={isOn}

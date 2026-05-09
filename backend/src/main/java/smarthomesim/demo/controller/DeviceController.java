@@ -16,6 +16,8 @@ import smarthomesim.demo.domain.exception.InvalidDeviceTypeException;
 import smarthomesim.demo.repository.AuditEntry;
 import smarthomesim.demo.service.AuditLog;
 import smarthomesim.demo.service.factory.DeviceFactory;
+import smarthomesim.demo.repository.persistence.DeviceStore;
+import smarthomesim.demo.domain.events.DeviceStateChangedEvent;
 
 @RestController
 @RequestMapping("/api/devices")
@@ -25,13 +27,14 @@ public class DeviceController {
   private final DeviceFactory factory;
   private final AuditLog auditLog;
   private final ApplicationEventPublisher publisher;
+  private final DeviceStore store;
 
-  public DeviceController(Map<String, Device> devices, DeviceFactory factory,
-                          AuditLog auditLog, ApplicationEventPublisher publisher) {
+  public DeviceController(Map<String, Device> devices, DeviceFactory factory, AuditLog auditLog, ApplicationEventPublisher publisher, DeviceStore store) {
     this.devices = devices;
     this.factory = factory;
     this.auditLog = auditLog;
     this.publisher = publisher;
+    this.store = store;
   }
 
   @GetMapping
@@ -57,6 +60,13 @@ public class DeviceController {
     devices.put(id, device);
     publisher.publishEvent(new DeviceRegisteredEvent(id, req.type(), req.name(), req.location()));
     return ResponseEntity.status(HttpStatus.CREATED).body(factory.view(device));
+  }
+
+  @PostMapping("/reset")
+  public ResponseEntity<Void> reset() {
+    store.reset();
+    publisher.publishEvent(new DeviceStateChangedEvent("system", "reset"));
+    return ResponseEntity.noContent().build();
   }
 
   @DeleteMapping("/{id}")

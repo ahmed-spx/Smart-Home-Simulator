@@ -3,8 +3,7 @@ import { SelectButton } from 'primereact/selectbutton';
 import { Slider } from 'primereact/slider';
 import { CardShell } from './CardShell';
 import {
-  toggleThermostat, setThermostatMode,
-  setThermostatTemperature, setThermostatMultiplier,
+  toggleThermostat, setThermostatMode, setThermostatTemperature,
 } from '../api/devices';
 
 const modeOptions = [
@@ -13,18 +12,11 @@ const modeOptions = [
   { label: 'Auto', value: 'Auto' },
 ];
 
-const multiplierOptions = [
-  { label: '1x', value: 'x1' },
-  { label: '2x', value: 'x2' },
-  { label: '5x', value: 'x5' },
-  { label: '10x', value: 'x10' },
-];
-
-export function ThermostatCard({ device, onUpdate }) {
+export function ThermostatCard({ device, onUpdate, onRemove }) {
   const isOn = device.state !== 'Off';
   return (
     <CardShell icon="pi-chart-line" name={device.name} typeLabel="Thermostat"
-               isActive={isOn} statusLabel={isOn ? 'On' : 'Off'}>
+               isActive={isOn} statusLabel={isOn ? 'On' : 'Off'} onRemove={onRemove}>
       <div className="control-row">
         <span className="control-label">Power</span>
         <InputSwitch checked={isOn}
@@ -51,11 +43,6 @@ export function ThermostatCard({ device, onUpdate }) {
         <span className="control-label">Mode</span>
         <SelectButton className="compact-select" value={device.mode} options={modeOptions} disabled={!isOn}
           onChange={async (e) => e.value && onUpdate(await setThermostatMode(device.id, e.value))} />
-      </div>
-      <div className="control-row">
-        <span className="control-label">Multiplier</span>
-        <SelectButton className="tiny-select" value={device.multiplier} options={multiplierOptions}
-          onChange={async (e) => e.value && onUpdate(await setThermostatMultiplier(device.id, e.value))} />
       </div>
     </CardShell>
   );

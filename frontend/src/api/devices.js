@@ -52,3 +52,16 @@ export const setThermostatMultiplier = (id, multiplier) =>
 // DoorLock API
 export const toggleDoorLock = (id) =>
   postJson(`${BASE_URL}/doorlocks/${id}/toggle`);
+
+// Device management APIs
+export const registerDevice = (data) =>
+  postJson(`${BASE_URL}/devices`, data);
+
+export const removeDevice = (id) =>
+  fetch(`${BASE_URL}/devices/${id}`, { method: 'DELETE' });
+
+export const resetAllDevices = () =>
+  postJson(`${BASE_URL}/devices/reset`);
+
+export const setThermostatAmbient = (id, ambientTemperature) =>
+  postJson(`${BASE_URL}/thermostats/${id}/ambient`, { ambientTemperature });

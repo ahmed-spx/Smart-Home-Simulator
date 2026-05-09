@@ -26,6 +26,14 @@ public class DeviceStore {
     this.factory = factory;
   }
 
+  public synchronized void reset() {
+    if (STATE_FILE.exists()) STATE_FILE.delete();
+    if (hub == null) hub = new LinkedHashMap<>();
+    hub.clear();
+    hub.putAll(seed());
+    save();
+  }
+
   @EventListener
   public void onMutation(DeviceMutationEvent event) {
     save();

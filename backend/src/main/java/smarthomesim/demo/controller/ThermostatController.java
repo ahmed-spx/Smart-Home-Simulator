@@ -14,6 +14,7 @@ import smarthomesim.demo.domain.exception.DeviceNotFoundException;
 import smarthomesim.demo.domain.thermostat.Multiplier;
 import smarthomesim.demo.domain.thermostat.Thermostat;
 import smarthomesim.demo.domain.thermostat.ThermostatMode;
+import smarthomesim.demo.domain.dto.AmbientTemperatureRequest;
 
 @RestController
 @RequestMapping("/api/thermostats")
@@ -53,6 +54,14 @@ public class ThermostatController {
     Thermostat t = requireThermostat(id);
     t.setStateDesiredTemperature(body.temperature());
     publisher.publishEvent(new DeviceStateChangedEvent(id, "setTemperature:" + body.temperature()));
+    return thermostatInfo(t);
+  }
+  
+  @PostMapping("/{id}/ambient")
+  public Map<String, Object> setAmbient(@PathVariable String id, @Valid @RequestBody AmbientTemperatureRequest body) {
+    Thermostat t = requireThermostat(id);
+    t.setAmbientTemperature(body.ambientTemperature());
+    publisher.publishEvent(new DeviceStateChangedEvent(id, "setAmbient:" + body.ambientTemperature()));
     return thermostatInfo(t);
   }
 
