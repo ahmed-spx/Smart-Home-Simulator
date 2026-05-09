@@ -1,22 +1,35 @@
-// Central place for every backend API call. The rest of the React app
-// imports these functions and never touches `fetch` directly.
+// Central place for every backend API call. Surfaces backend ProblemDetail
+// errors as JS Errors so the UI can react.
 
 const BASE_URL = 'http://localhost:8080/api';
 
-// Small helper: POST a JSON body and parse the JSON response.
+async function handle(res) {
+  if (!res.ok) {
+    let message = `${res.status} ${res.statusText}`;
+    try {
+      const problem = await res.json();
+      if (problem.detail)      message = problem.detail;
+      else if (problem.title)  message = problem.title;
+    } catch { /* response wasn't JSON */ }
+    const err = new Error(message);
+    err.status = res.status;
+    throw err;
+  }
+  return res.status === 204 ? null : res.json();
+}
+
 async function postJson(url, body) {
   const res = await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: body ? JSON.stringify(body) : undefined,
   });
-  return res.json();
+  return handle(res);
 }
 
-//Device APIs
+// Device APIs
 export async function getAllDevices() {
-  const res = await fetch(`${BASE_URL}/devices`);
-  return res.json();
+  return handle(await fetch(`${BASE_URL}/devices`));
 }
 
 // Light APIs
@@ -44,10 +57,13 @@ export const setThermostatMode = (id, mode) =>
   postJson(`${BASE_URL}/thermostats/${id}/mode`, { mode });
 
 export const setThermostatTemperature = (id, temperature) =>
-  postJson(`${BASE_URL}/thermostats/${id}/temperature`, { temperature })
+  postJson(`${BASE_URL}/thermostats/${id}/temperature`, { temperature });
 
 export const setThermostatMultiplier = (id, multiplier) =>
   postJson(`${BASE_URL}/thermostats/${id}/multiplier`, { multiplier });
+
+export const setThermostatAmbient = (id, ambientTemperature) =>
+  postJson(`${BASE_URL}/thermostats/${id}/ambient`, { ambientTemperature });
 
 // DoorLock API
 export const toggleDoorLock = (id) =>
@@ -58,10 +74,7 @@ export const registerDevice = (data) =>
   postJson(`${BASE_URL}/devices`, data);
 
 export const removeDevice = (id) =>
-  fetch(`${BASE_URL}/devices/${id}`, { method: 'DELETE' });
+  fetch(`${BASE_URL}/devices/${id}`, { method: 'DELETE' }).then(handle);
 
 export const resetAllDevices = () =>
   postJson(`${BASE_URL}/devices/reset`);
-
-export const setThermostatAmbient = (id, ambientTemperature) =>
-  postJson(`${BASE_URL}/thermostats/${id}/ambient`, { ambientTemperature });

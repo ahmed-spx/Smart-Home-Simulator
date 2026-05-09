@@ -16,17 +16,26 @@ export function AddDeviceModal({ visible, onHide, onSubmit, existingLocations })
   const [name, setName] = useState('');
   const [location, setLocation] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(null);
 
   useEffect(() => {
-    if (visible) { setType('Light'); setName(''); setLocation(''); }
+    if (visible) {
+      setType('Light');
+      setName('');
+      setLocation('');
+      setSubmitError(null);
+    }
   }, [visible]);
 
   const handleSubmit = async () => {
     if (!name.trim() || !location.trim()) return;
     setSubmitting(true);
+    setSubmitError(null);
     try {
       await onSubmit({ type, name: name.trim(), location: location.trim() });
       onHide();
+    } catch (e) {
+      setSubmitError(e?.message ?? String(e));
     } finally {
       setSubmitting(false);
     }
@@ -62,6 +71,7 @@ export function AddDeviceModal({ visible, onHide, onSubmit, existingLocations })
           placeholder="Select or type a location"
         />
       </div>
+      {submitError && <div className="form-error">{submitError}</div>}
       <div className="form-actions">
         <Button label="Cancel" outlined onClick={onHide} />
         <Button label="Add" onClick={handleSubmit}

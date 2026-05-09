@@ -12,15 +12,21 @@ const modeOptions = [
   { label: 'Auto', value: 'Auto' },
 ];
 
-export function ThermostatCard({ device, onUpdate, onRemove }) {
+export function ThermostatCard({ device, onUpdate, onRemove, onError }) {
   const isOn = device.state !== 'Off';
+
+  const safe = async (fn) => {
+    try { onUpdate(await fn()); }
+    catch (e) { onError?.(e); }
+  };
+
   return (
     <CardShell icon="pi-chart-line" name={device.name} typeLabel="Thermostat"
                isActive={isOn} statusLabel={isOn ? 'On' : 'Off'} onRemove={onRemove}>
       <div className="control-row">
         <span className="control-label">Power</span>
         <InputSwitch checked={isOn}
-          onChange={async () => onUpdate(await toggleThermostat(device.id))} />
+          onChange={() => safe(() => toggleThermostat(device.id))} />
       </div>
       <div className="thermo-display">
         <div>
@@ -36,13 +42,13 @@ export function ThermostatCard({ device, onUpdate, onRemove }) {
         <span className="control-label">Target</span>
         <Slider value={device.desiredTemperature} min={60} max={80} disabled={!isOn}
           style={{ flex: 1 }}
-          onChange={async (e) => onUpdate(await setThermostatTemperature(device.id, e.value))} />
+          onChange={(e) => safe(() => setThermostatTemperature(device.id, e.value))} />
         <span className="control-value">{device.desiredTemperature}°F</span>
       </div>
       <div className="control-row">
         <span className="control-label">Mode</span>
         <SelectButton className="compact-select" value={device.mode} options={modeOptions} disabled={!isOn}
-          onChange={async (e) => e.value && onUpdate(await setThermostatMode(device.id, e.value))} />
+          onChange={(e) => e.value && safe(() => setThermostatMode(device.id, e.value))} />
       </div>
     </CardShell>
   );

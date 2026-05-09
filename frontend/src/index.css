@@ -197,3 +197,13 @@ body {
 .empty-state {
   text-align: center; color: #6b7280; padding: 40px 20px; font-size: 14px;
 }
+
+.form-error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+  font-size: 13px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+}

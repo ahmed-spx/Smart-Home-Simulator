@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
+import { Toast } from 'primereact/toast';
 import {
   getAllDevices,
   registerDevice, removeDevice, resetAllDevices,
@@ -16,17 +17,34 @@ import { DoorLockCard } from './components/DoorLockCard';
 
 function App() {
   const [devices, setDevices] = useState([]);
-  const [error, setError] = useState(null);
   const [filters, setFilters] = useState({ status: 'all', location: 'all', type: 'all' });
   const [multiplier, setMultiplier] = useState(1);
   const [showAdd, setShowAdd] = useState(false);
+  const toast = useRef(null);
+
+  const showError = (e) => toast.current?.show({
+    severity: 'error',
+    summary: 'Error',
+    detail: e?.message ?? String(e),
+    life: 4000,
+  });
+
+  const showInfo = (summary, detail) => toast.current?.show({
+    severity: 'info', summary, detail, life: 2500,
+  });
 
   useEffect(() => {
-    const refresh = () => getAllDevices().then(setDevices).catch((e) => setError(e.message));
+    const refresh = () => getAllDevices().then(setDevices).catch(showError);
     refresh();
     const es = new EventSource('http://localhost:8080/api/events');
     ['device-changed', 'device-added', 'device-removed'].forEach(name => {
       es.addEventListener(name, refresh);
+    });
+    es.onerror = () => toast.current?.show({
+      severity: 'warn',
+      summary: 'Live updates disconnected',
+      detail: 'Backend unreachable. Reconnecting…',
+      life: 3000,
     });
     return () => es.close();
   }, []);
@@ -46,11 +64,10 @@ function App() {
   }
 
   const visible = devices.filter(d => {
-  if (filters.location !== 'all' && d.location !== filters.location) return false;
-  if (filters.type !== 'all' && d.type !== filters.type) return false;
+    if (filters.location !== 'all' && d.location !== filters.location) return false;
+    if (filters.type !== 'all' && d.type !== filters.type) return false;
     if (filters.status !== 'all') {
       if (d.type === 'Lock') {
-        // Locks are always "On" — hide them when filtering for Off
         if (filters.status === 'off') return false;
       } else {
         const isOn = d.state !== 'Off';
@@ -58,7 +75,7 @@ function App() {
         if (filters.status === 'off' &&  isOn) return false;
       }
     }
-  return true;
+    return true;
   });
 
   const byLocation = visible.reduce((acc, d) => {
@@ -67,17 +84,25 @@ function App() {
   }, {});
 
   const handleAmbient = async (location, value) => {
-    const inLoc = thermostats.filter(t => t.location === location);
-    await Promise.all(inLoc.map(t => setThermostatAmbient(t.id, value)));
+    try {
+      const inLoc = thermostats.filter(t => t.location === location);
+      await Promise.all(inLoc.map(t => setThermostatAmbient(t.id, value)));
+    } catch (e) { showError(e); }
   };
 
   const handleMultiplier = async (value) => {
     setMultiplier(value);
-    const key = `x${value}`;
-    await Promise.all(thermostats.map(t => setThermostatMultiplier(t.id, key)));
+    try {
+      const key = `x${value}`;
+      await Promise.all(thermostats.map(t => setThermostatMultiplier(t.id, key)));
+    } catch (e) { showError(e); }
   };
 
-  const handleAdd = (data) => registerDevice(data);
+  // Modal calls this; rethrow keeps the modal open on error.
+  const handleAdd = async (data) => {
+    try { await registerDevice(data); }
+    catch (e) { showError(e); throw e; }
+  };
 
   const handleRemove = (deviceId) => {
     confirmDialog({
@@ -85,7 +110,10 @@ function App() {
       header: 'Remove Device',
       icon: 'pi pi-exclamation-triangle',
       acceptClassName: 'p-button-danger',
-      accept: () => removeDevice(deviceId),
+      accept: async () => {
+        try { await removeDevice(deviceId); }
+        catch (e) { showError(e); }
+      },
     });
   };
 
@@ -96,14 +124,21 @@ function App() {
       icon: 'pi pi-exclamation-triangle',
       acceptClassName: 'p-button-danger',
       accept: async () => {
-        await resetAllDevices();
-        setMultiplier(1);
+        try {
+          await resetAllDevices();
+          setMultiplier(1);
+          showInfo('Devices reset', 'All devices restored to defaults.');
+        } catch (e) { showError(e); }
       },
     });
   };
 
   const renderCard = (d) => {
-    const props = { key: d.id, device: d, onUpdate: replaceDevice, onRemove: () => handleRemove(d.id) };
+    const props = {
+      key: d.id, device: d, onUpdate: replaceDevice,
+      onRemove: () => handleRemove(d.id),
+      onError: showError,
+    };
     if (d.type === 'Light')      return <LightCard {...props} />;
     if (d.type === 'Fan')        return <FanCard {...props} />;
     if (d.type === 'Thermostat') return <ThermostatCard {...props} />;
@@ -111,10 +146,9 @@ function App() {
     return null;
   };
 
-  if (error) return <p style={{ padding: 24 }}>Could not reach the backend: {error}</p>;
-
   return (
     <div className="app-shell">
+      <Toast ref={toast} position="bottom-right" />
       <ConfirmDialog />
       <AddDeviceModal
         visible={showAdd}

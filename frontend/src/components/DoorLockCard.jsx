@@ -2,8 +2,14 @@ import { Button } from 'primereact/button';
 import { CardShell } from './CardShell';
 import { toggleDoorLock } from '../api/devices';
 
-export function DoorLockCard({ device, onUpdate, onRemove }) {
+export function DoorLockCard({ device, onUpdate, onRemove, onError }) {
   const isUnlocked = device.state === 'Unlocked';
+
+  const safe = async (fn) => {
+    try { onUpdate(await fn()); }
+    catch (e) { onError?.(e); }
+  };
+
   return (
     <CardShell icon="pi-lock" name={device.name} typeLabel="Door Lock"
                isActive={true} statusLabel="On" onRemove={onRemove}>
@@ -13,7 +19,7 @@ export function DoorLockCard({ device, onUpdate, onRemove }) {
           label={isUnlocked ? 'Lock' : 'Unlock'}
           severity={isUnlocked ? 'secondary' : 'success'}
           size="small"
-          onClick={async () => onUpdate(await toggleDoorLock(device.id))}
+          onClick={() => safe(() => toggleDoorLock(device.id))}
         />
       </div>
     </CardShell>
