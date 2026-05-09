@@ -1,5 +1,7 @@
 package smarthomesim.demo.factory;
 
+import java.util.Map;
+
 import org.springframework.stereotype.Component;
 import smarthomesim.demo.device.Device;
 import smarthomesim.demo.doorlock.DoorLock;
@@ -31,4 +33,13 @@ public class DoorLockCreator implements DeviceCreator {
     return new DeviceSnapshot(dl.getId(), "DoorLock", dl.getName(), dl.getLocation(),
         dl.getDoorLockState().name(), null, null, null, null, null, null, null);
   }
+
+  @Override public String idPrefix() { return "lock"; }
+
+  @Override
+  public void addCustomFields(Device device, Map<String, Object> info) {
+    DoorLock dl = (DoorLock) device;
+    info.put("state", dl.getDoorLockState());
+  }
+  
 }

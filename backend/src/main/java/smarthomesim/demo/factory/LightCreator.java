@@ -1,6 +1,8 @@
 package smarthomesim.demo.factory;
 
 import java.awt.Color;
+import java.util.Map;
+
 import org.springframework.stereotype.Component;
 import smarthomesim.demo.device.Device;
 import smarthomesim.demo.light.Light;
@@ -35,4 +37,15 @@ public class LightCreator implements DeviceCreator {
         l.getLightState().name(), l.getBrightness(), l.getColorHex(),
         null, null, null, null, null);
   }
+
+  @Override public String idPrefix() { return "light"; }
+
+  @Override
+  public void addCustomFields(Device device, Map<String, Object> info) {
+    Light l = (Light) device;
+    info.put("state", l.getLightState());
+    info.put("brightness", l.getBrightness());
+    info.put("color", l.getColorHex());
+  }
+  
 }

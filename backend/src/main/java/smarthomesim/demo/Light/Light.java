@@ -30,6 +30,9 @@ public class Light extends Device {
 
   //setters
   public void setBrightness(int brightness) {
+    if (brightness < 10 || brightness > 100) {
+      throw new smarthomesim.demo.exception.DomainException("brightness must be between 10 and 100, got " + brightness);
+    }
     this.brightness = brightness;
   }
   public void setColor(Color color) {

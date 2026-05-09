@@ -1,5 +1,7 @@
 package smarthomesim.demo.factory;
 
+import java.util.Map;
+
 import org.springframework.stereotype.Component;
 import smarthomesim.demo.device.Device;
 import smarthomesim.demo.persistence.DeviceSnapshot;
@@ -61,4 +63,17 @@ public class ThermostatCreator implements DeviceCreator {
       default -> new OffThermostatState();
     };
   }
+
+  @Override public String idPrefix() { return "thermo"; }
+
+  @Override
+  public void addCustomFields(Device device, Map<String, Object> info) {
+    Thermostat t = (Thermostat) device;
+    info.put("state", t.getThermostatState());
+    info.put("mode", t.getMode());
+    info.put("multiplier", t.getMultiplier());
+    info.put("desiredTemperature", t.getDesiredTemperature());
+    info.put("ambientTemperature", t.getAmbientTemperature());
+  } 
+  
 }

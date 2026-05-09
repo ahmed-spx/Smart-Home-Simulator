@@ -65,6 +65,9 @@ public class Thermostat extends Device {
     this.mode = mode;
   }
   public void setThermostatDesiredTemperature(int desiredTemperature) {
+    if (desiredTemperature < 60 || desiredTemperature > 80) {
+      throw new smarthomesim.demo.exception.DomainException("desiredTemperature must be between 60 and 80, got " + desiredTemperature);
+    }
     this.desiredTemperature = desiredTemperature;
   }
   public void increaseAmbientTemperature() {

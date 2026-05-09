@@ -1,5 +1,7 @@
 package smarthomesim.demo.factory;
 
+import java.util.Map;
+
 import org.springframework.stereotype.Component;
 import smarthomesim.demo.device.Device;
 import smarthomesim.demo.fan.Fan;
@@ -34,4 +36,14 @@ public class FanCreator implements DeviceCreator {
         f.getFanState().name(), null, null, f.getSpeed().name(),
         null, null, null, null);
   }
+
+  @Override public String idPrefix() { return "fan"; }
+
+  @Override
+  public void addCustomFields(Device device, Map<String, Object> info) {
+    Fan f = (Fan) device;
+    info.put("state", f.getFanState());
+    info.put("speed", f.getSpeed());
+  }
+  
 }

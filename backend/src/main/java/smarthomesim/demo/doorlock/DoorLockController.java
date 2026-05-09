@@ -6,6 +6,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.*;
 import smarthomesim.demo.device.Device;
 import smarthomesim.demo.events.DeviceStateChangedEvent;
+import smarthomesim.demo.exception.DeviceNotFoundException;
 
 @RestController
 @RequestMapping("/api/doorlocks")
@@ -21,15 +22,21 @@ public class DoorLockController {
 
   @GetMapping("/{id}")
   public Map<String, Object> getDoorLock(@PathVariable String id) {
-    return doorLockInfo((DoorLock) devices.get(id));
+    return doorLockInfo(requireLock(id));
   }
 
   @PostMapping("/{id}/toggle")
   public Map<String, Object> toggleDoorLock(@PathVariable String id) {
-    DoorLock doorLock = (DoorLock) devices.get(id);
+    DoorLock doorLock = requireLock(id);
     doorLock.toggleLock();
     publisher.publishEvent(new DeviceStateChangedEvent(id, "toggleLock"));
     return doorLockInfo(doorLock);
+  }
+
+  private DoorLock requireLock(String id) {
+    Device d = devices.get(id);
+    if (!(d instanceof DoorLock dl)) throw new DeviceNotFoundException(id);
+    return dl;
   }
 
   private Map<String, Object> doorLockInfo(DoorLock dl) {

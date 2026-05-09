@@ -1,5 +1,9 @@
 package smarthomesim.demo.device;
 
+// Base type for every controllable device in the simulator.
+// Holds the immutable identity (id, name, location, type) shared by all devices;
+// subtypes own their own runtime state and behaviour.
+
 public abstract class Device {
   //fields
   private final String id;

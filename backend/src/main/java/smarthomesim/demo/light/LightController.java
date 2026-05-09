@@ -5,8 +5,12 @@ import java.util.HashMap;
 import java.util.Map;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 import smarthomesim.demo.device.Device;
+import smarthomesim.demo.dto.BrightnessRequest;
+import smarthomesim.demo.dto.ColorRequest;
 import smarthomesim.demo.events.DeviceStateChangedEvent;
+import smarthomesim.demo.exception.DeviceNotFoundException;
 
 @RestController
 @RequestMapping("/api/lights")
@@ -22,33 +26,37 @@ public class LightController {
 
   @GetMapping("/{id}")
   public Map<String, Object> getLight(@PathVariable String id) {
-    return lightInfo((Light) devices.get(id));
+    return lightInfo(requireLight(id));
   }
 
   @PostMapping("/{id}/toggle")
   public Map<String, Object> toggleLight(@PathVariable String id) {
-    Light light = (Light) devices.get(id);
+    Light light = requireLight(id);
     light.togglePower();
     publisher.publishEvent(new DeviceStateChangedEvent(id, "toggle"));
     return lightInfo(light);
   }
 
   @PostMapping("/{id}/brightness")
-  public Map<String, Object> setBrightness(@PathVariable String id, @RequestBody Map<String, Integer> body) {
-    Light light = (Light) devices.get(id);
-    int b = body.get("brightness");
-    light.setStateBrightness(b);
-    publisher.publishEvent(new DeviceStateChangedEvent(id, "setBrightness:" + b));
+  public Map<String, Object> setBrightness(@PathVariable String id, @Valid @RequestBody BrightnessRequest body) {
+    Light light = requireLight(id);
+    light.setStateBrightness(body.brightness());
+    publisher.publishEvent(new DeviceStateChangedEvent(id, "setBrightness:" + body.brightness()));
     return lightInfo(light);
   }
 
   @PostMapping("/{id}/color")
-  public Map<String, Object> setColor(@PathVariable String id, @RequestBody Map<String, String> body) {
-    Light light = (Light) devices.get(id);
-    String c = body.get("color");
-    light.setStateColor(Color.decode(c));
-    publisher.publishEvent(new DeviceStateChangedEvent(id, "setColor:" + c));
+  public Map<String, Object> setColor(@PathVariable String id, @Valid @RequestBody ColorRequest body) {
+    Light light = requireLight(id);
+    light.setStateColor(Color.decode(body.color()));
+    publisher.publishEvent(new DeviceStateChangedEvent(id, "setColor:" + body.color()));
     return lightInfo(light);
+  }
+
+  private Light requireLight(String id) {
+    Device d = devices.get(id);
+    if (!(d instanceof Light l)) throw new DeviceNotFoundException(id);
+    return l;
   }
 
   private Map<String, Object> lightInfo(Light l) {

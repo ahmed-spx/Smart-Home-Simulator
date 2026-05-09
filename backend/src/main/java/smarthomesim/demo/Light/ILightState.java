@@ -1,6 +1,9 @@
 package smarthomesim.demo.light;
 import java.awt.Color;
 
+// State strategy for Light. Each implementation represents one power
+// state and defines how the light reacts to commands while in that state.
+
 public interface ILightState {
   public LightState getState();
   public void togglePower(Light light);

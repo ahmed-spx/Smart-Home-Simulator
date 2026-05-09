@@ -42,4 +42,24 @@ public class DeviceFactory {
     if (c == null) throw new IllegalArgumentException("Unknown device type: " + key);
     return c;
   }
+
+  public Map<String, Object> view(Device device) {
+    DeviceCreator c = byClass.get(device.getClass());
+    if (c == null) {
+      throw new IllegalArgumentException("No creator registered for class: " + device.getClass().getName());
+    }
+    return c.view(device);
+  }
+
+  public String nextId(String type, java.util.Set<String> existingIds) {
+    String prefix = resolveByKey(type).idPrefix();
+    int max = existingIds.stream()
+        .filter(id -> id.startsWith(prefix + "-"))
+        .map(id -> id.substring(prefix.length() + 1))
+        .filter(s -> s.matches("\\d+"))
+        .mapToInt(Integer::parseInt)
+        .max()
+        .orElse(0);
+    return prefix + "-" + (max + 1);
+  }
 }

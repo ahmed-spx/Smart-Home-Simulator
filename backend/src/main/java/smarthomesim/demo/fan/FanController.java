@@ -4,8 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 import smarthomesim.demo.device.Device;
+import smarthomesim.demo.dto.FanSpeedRequest;
 import smarthomesim.demo.events.DeviceStateChangedEvent;
+import smarthomesim.demo.exception.DeviceNotFoundException;
 
 @RestController
 @RequestMapping("/api/fans")
@@ -21,24 +24,29 @@ public class FanController {
 
   @GetMapping("/{id}")
   public Map<String, Object> getFan(@PathVariable String id) {
-    return fanInfo((Fan) devices.get(id));
+    return fanInfo(requireFan(id));
   }
 
   @PostMapping("/{id}/toggle")
   public Map<String, Object> toggleFan(@PathVariable String id) {
-    Fan fan = (Fan) devices.get(id);
+    Fan fan = requireFan(id);
     fan.togglePower();
     publisher.publishEvent(new DeviceStateChangedEvent(id, "toggle"));
     return fanInfo(fan);
   }
 
   @PostMapping("/{id}/speed")
-  public Map<String, Object> setSpeed(@PathVariable String id, @RequestBody Map<String, String> body) {
-    Fan fan = (Fan) devices.get(id);
-    String s = body.get("speed");
-    fan.setStateSpeed(Speed.valueOf(s));
-    publisher.publishEvent(new DeviceStateChangedEvent(id, "setSpeed:" + s));
+  public Map<String, Object> setSpeed(@PathVariable String id, @Valid @RequestBody FanSpeedRequest body) {
+    Fan fan = requireFan(id);
+    fan.setStateSpeed(Speed.valueOf(body.speed()));
+    publisher.publishEvent(new DeviceStateChangedEvent(id, "setSpeed:" + body.speed()));
     return fanInfo(fan);
+  }
+
+  private Fan requireFan(String id) {
+    Device d = devices.get(id);
+    if (!(d instanceof Fan f)) throw new DeviceNotFoundException(id);
+    return f;
   }
 
   private Map<String, Object> fanInfo(Fan f) {

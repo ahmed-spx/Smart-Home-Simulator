@@ -4,8 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 import smarthomesim.demo.device.Device;
+import smarthomesim.demo.dto.ModeRequest;
+import smarthomesim.demo.dto.MultiplierRequest;
+import smarthomesim.demo.dto.TemperatureRequest;
 import smarthomesim.demo.events.DeviceStateChangedEvent;
+import smarthomesim.demo.exception.DeviceNotFoundException;
 
 @RestController
 @RequestMapping("/api/thermostats")
@@ -21,42 +26,45 @@ public class ThermostatController {
 
   @GetMapping("/{id}")
   public Map<String, Object> getThermostat(@PathVariable String id) {
-    return thermostatInfo((Thermostat) devices.get(id));
+    return thermostatInfo(requireThermostat(id));
   }
 
   @PostMapping("/{id}/toggle")
   public Map<String, Object> toggleThermostat(@PathVariable String id) {
-    Thermostat t = (Thermostat) devices.get(id);
+    Thermostat t = requireThermostat(id);
     t.togglePower();
     publisher.publishEvent(new DeviceStateChangedEvent(id, "toggle"));
     return thermostatInfo(t);
   }
 
   @PostMapping("/{id}/mode")
-  public Map<String, Object> setMode(@PathVariable String id, @RequestBody Map<String, String> body) {
-    Thermostat t = (Thermostat) devices.get(id);
-    String mode = body.get("mode");
-    t.setStateMode(ThermostatMode.valueOf(mode));
-    publisher.publishEvent(new DeviceStateChangedEvent(id, "setMode:" + mode));
+  public Map<String, Object> setMode(@PathVariable String id, @Valid @RequestBody ModeRequest body) {
+    Thermostat t = requireThermostat(id);
+    t.setStateMode(ThermostatMode.valueOf(body.mode()));
+    publisher.publishEvent(new DeviceStateChangedEvent(id, "setMode:" + body.mode()));
     return thermostatInfo(t);
   }
 
   @PostMapping("/{id}/temperature")
-  public Map<String, Object> setTemperature(@PathVariable String id, @RequestBody Map<String, Integer> body) {
-    Thermostat t = (Thermostat) devices.get(id);
-    int temp = body.get("temperature");
-    t.setStateDesiredTemperature(temp);
-    publisher.publishEvent(new DeviceStateChangedEvent(id, "setTemperature:" + temp));
+  public Map<String, Object> setTemperature(@PathVariable String id, @Valid @RequestBody TemperatureRequest body) {
+    Thermostat t = requireThermostat(id);
+    t.setStateDesiredTemperature(body.temperature());
+    publisher.publishEvent(new DeviceStateChangedEvent(id, "setTemperature:" + body.temperature()));
     return thermostatInfo(t);
   }
 
   @PostMapping("/{id}/multiplier")
-  public Map<String, Object> setMultiplier(@PathVariable String id, @RequestBody Map<String, String> body) {
-    Thermostat t = (Thermostat) devices.get(id);
-    String mult = body.get("multiplier");
-    t.setMultiplier(Multiplier.valueOf(mult));
-    publisher.publishEvent(new DeviceStateChangedEvent(id, "setMultiplier:" + mult));
+  public Map<String, Object> setMultiplier(@PathVariable String id, @Valid @RequestBody MultiplierRequest body) {
+    Thermostat t = requireThermostat(id);
+    t.setMultiplier(Multiplier.valueOf(body.multiplier()));
+    publisher.publishEvent(new DeviceStateChangedEvent(id, "setMultiplier:" + body.multiplier()));
     return thermostatInfo(t);
+  }
+
+  private Thermostat requireThermostat(String id) {
+    Device d = devices.get(id);
+    if (!(d instanceof Thermostat t)) throw new DeviceNotFoundException(id);
+    return t;
   }
 
   private Map<String, Object> thermostatInfo(Thermostat t) {
