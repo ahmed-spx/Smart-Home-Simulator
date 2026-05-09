@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell($jar = \"C:\\\\Users\\\\Ahmad\\\\.m2\\\\repository\\\\org\\\\springframework\\\\boot\\\\spring-boot-test-autoconfigure\\\\4.0.6\\\\spring-boot-test-autoconfigure-4.0.6.jar\"; Add-Type -AssemblyName System.IO.Compression.FileSystem; $z = [System.IO.Compression.ZipFile]::OpenRead\\($jar\\); $entries = $z.Entries | Select-Object -ExpandProperty FullName; $z.Dispose\\(\\); $entries)"
+    ]
+  }
+}
