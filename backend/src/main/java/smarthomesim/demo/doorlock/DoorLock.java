@@ -10,7 +10,7 @@ public class DoorLock extends Device{
     //constructor
     public DoorLock(String id, String name, String location) {
         super(id, name, location, DeviceType.Lock);
-        this.DoorLockState = new LockedState();
+        this.DoorLockState = new UnlockedState();
     }
 
     //setter

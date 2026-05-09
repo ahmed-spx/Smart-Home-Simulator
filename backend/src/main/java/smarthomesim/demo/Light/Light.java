@@ -12,7 +12,7 @@ public class Light extends Device {
   //constructor
   public Light(String id, String name, String location) {
     super(id, name, location, DeviceType.Light);
-    this.lightState = new OnLight();
+    this.lightState = new OffLight();
     this.brightness = 100;
     this.color = Color.WHITE;
   }

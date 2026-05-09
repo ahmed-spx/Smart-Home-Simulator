@@ -1,75 +1,56 @@
 package smarthomesim.demo.light;
-import java.util.HashMap;
-import java.util.Map;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import smarthomesim.demo.audit.AuditLog;
-import smarthomesim.demo.device.Device;
-import smarthomesim.demo.persistence.DeviceStore;
 
 import java.awt.Color;
+import java.util.HashMap;
+import java.util.Map;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.web.bind.annotation.*;
+import smarthomesim.demo.device.Device;
+import smarthomesim.demo.events.DeviceStateChangedEvent;
 
 @RestController
 @RequestMapping("/api/lights")
-
 public class LightController {
 
-  // fields
   private final Map<String, Device> devices;
-  private final DeviceStore store;
-  private final AuditLog auditLog;
+  private final ApplicationEventPublisher publisher;
 
-  // constructor: Spring will inject the device hub
-  public LightController(Map<String, Device> devices, DeviceStore store, AuditLog auditLog) {
+  public LightController(Map<String, Device> devices, ApplicationEventPublisher publisher) {
     this.devices = devices;
-    this.store = store;
-    this.auditLog = auditLog;
+    this.publisher = publisher;
   }
 
-  // GET info about a light
   @GetMapping("/{id}")
   public Map<String, Object> getLight(@PathVariable String id) {
     return lightInfo((Light) devices.get(id));
   }
 
-  // POST for toggle
   @PostMapping("/{id}/toggle")
   public Map<String, Object> toggleLight(@PathVariable String id) {
     Light light = (Light) devices.get(id);
     light.togglePower();
-    auditLog.record(id, "toggle");
-    store.save();
+    publisher.publishEvent(new DeviceStateChangedEvent(id, "toggle"));
     return lightInfo(light);
   }
 
-  // POST for brightness
   @PostMapping("/{id}/brightness")
   public Map<String, Object> setBrightness(@PathVariable String id, @RequestBody Map<String, Integer> body) {
     Light light = (Light) devices.get(id);
-    int brightness = body.get("brightness");
-    light.setStateBrightness(brightness);
-    auditLog.record(id, "setBrightness" + brightness);
-    store.save();
+    int b = body.get("brightness");
+    light.setStateBrightness(b);
+    publisher.publishEvent(new DeviceStateChangedEvent(id, "setBrightness:" + b));
     return lightInfo(light);
   }
 
-  // POST for color
   @PostMapping("/{id}/color")
   public Map<String, Object> setColor(@PathVariable String id, @RequestBody Map<String, String> body) {
     Light light = (Light) devices.get(id);
-    String colorhex = body.get("color");
-    light.setStateColor(Color.decode(colorhex));
-    auditLog.record(id, "setColor" + colorhex);
-    store.save();
+    String c = body.get("color");
+    light.setStateColor(Color.decode(c));
+    publisher.publishEvent(new DeviceStateChangedEvent(id, "setColor:" + c));
     return lightInfo(light);
   }
 
-  // helper: shape the JSON the frontend receives
   private Map<String, Object> lightInfo(Light l) {
     Map<String, Object> m = new HashMap<>();
     m.put("id", l.getId());

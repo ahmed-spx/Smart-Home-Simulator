@@ -10,11 +10,19 @@ function App() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    // Initial load
     getAllDevices().then(setDevices).catch((e) => setError(e.message));
-    const id = setInterval(() => {
-      getAllDevices().then(setDevices).catch(() => {});
-    }, 500);
-    return () => clearInterval(id);
+
+    // Live updates via SSE — push from server, no polling
+    const es = new EventSource('http://localhost:8080/api/events');
+    const refresh = () => getAllDevices().then(setDevices).catch(() => {});
+    es.addEventListener('device-changed', refresh);
+    es.addEventListener('device-added',   refresh);
+    es.addEventListener('device-removed', refresh);
+    es.onerror = () => {
+    // EventSource auto-reconnects on transient errors; nothing to do.
+    };
+    return () => es.close();
   }, []);
 
   const replaceDevice = (updated) =>

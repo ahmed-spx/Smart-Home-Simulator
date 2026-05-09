@@ -8,13 +8,32 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
+import smarthomesim.demo.events.DeviceRegisteredEvent;
+import smarthomesim.demo.events.DeviceRemovedEvent;
+import smarthomesim.demo.events.DeviceStateChangedEvent;
 
 @Component
 public class AuditLog {
 
   private static final File LOG_FILE = new File("data/audit.jsonl");
   private final ObjectMapper mapper = new ObjectMapper();
+
+  @EventListener
+  public void onChange(DeviceStateChangedEvent e) {
+    record(e.deviceId(), e.operation());
+  }
+
+  @EventListener
+  public void onRegistered(DeviceRegisteredEvent e) {
+    record(e.deviceId(), "registered:" + e.type() + ":" + e.name() + "@" + e.location());
+  }
+
+  @EventListener
+  public void onRemoved(DeviceRemovedEvent e) {
+    record(e.deviceId(), "removed");
+  }
 
   public synchronized void record(String deviceId, String operation) {
     AuditEntry entry = new AuditEntry(Instant.now().toString(), deviceId, operation);

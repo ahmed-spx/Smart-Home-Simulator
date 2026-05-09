@@ -8,9 +8,11 @@ import java.util.Map;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.springframework.stereotype.Component;
+import org.springframework.context.event.EventListener;
 
 import smarthomesim.demo.device.Device;
 import smarthomesim.demo.factory.DeviceFactory;
+import smarthomesim.demo.events.DeviceMutationEvent;
 
 @Component
 public class DeviceStore {
@@ -24,6 +26,11 @@ public class DeviceStore {
     this.factory = factory;
   }
 
+  @EventListener
+  public void onMutation(DeviceMutationEvent event) {
+    save();
+  }
+  
   public Map<String, Device> load() {
     if (!STATE_FILE.exists()) {
       hub = seed();
