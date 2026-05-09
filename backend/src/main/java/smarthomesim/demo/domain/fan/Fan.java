@@ -1,0 +1,42 @@
+package smarthomesim.demo.domain.fan;
+import smarthomesim.demo.domain.Device;
+import smarthomesim.demo.domain.DeviceType;
+
+public class Fan extends Device {
+  //attributes
+  private IFanState fanState;
+  private Speed speed;
+
+  //constructor
+  public Fan(String id, String name, String location) {
+    super(id, name, location, DeviceType.Fan);
+    this.fanState = new OffFanState();
+    this.speed = Speed.Off;
+  }
+
+  //state machine setters
+  public void togglePower() {
+    this.fanState.togglePower(this);
+  }
+  public void setStateSpeed(Speed speed) {
+    fanState.setSpeed(this, speed);
+  }
+
+  //setters
+  public void setSpeed(Speed speed) {
+    this.speed = speed;
+  }
+
+  //getters
+  public FanState getFanState() {
+    return fanState.getState();
+  }
+  public Speed getSpeed() {
+    return speed;
+  }
+  
+  //transition
+  public void changeState(IFanState newState) {
+    this.fanState = newState;
+  }
+}

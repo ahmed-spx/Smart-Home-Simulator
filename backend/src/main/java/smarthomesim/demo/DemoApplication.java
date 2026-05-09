@@ -5,8 +5,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import smarthomesim.demo.device.Device;
-import smarthomesim.demo.persistence.DeviceStore;
+
+import smarthomesim.demo.domain.Device;
+import smarthomesim.demo.repository.persistence.DeviceStore;
 
 @SpringBootApplication
 @EnableScheduling

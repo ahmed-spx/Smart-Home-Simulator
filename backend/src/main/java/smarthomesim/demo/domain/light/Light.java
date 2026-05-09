@@ -1,0 +1,58 @@
+package smarthomesim.demo.domain.light;
+import java.awt.Color;
+
+import smarthomesim.demo.domain.Device;
+import smarthomesim.demo.domain.DeviceType;
+
+public class Light extends Device {
+  //fields
+  private ILightState lightState;
+  private int brightness;
+  private Color color;
+
+  //constructor
+  public Light(String id, String name, String location) {
+    super(id, name, location, DeviceType.Light);
+    this.lightState = new OffLight();
+    this.brightness = 100;
+    this.color = Color.WHITE;
+  }
+
+  //state machine setters
+  public void togglePower() {
+    lightState.togglePower(this);
+  }
+  public void setStateBrightness(int brightness) {
+    lightState.setBrightness(this, brightness);
+  }
+  public void setStateColor(Color color) {
+    lightState.setColor(this, color);
+  }
+
+  //setters
+  public void setBrightness(int brightness) {
+    if (brightness < 10 || brightness > 100) {
+      throw new smarthomesim.demo.domain.exception.DomainException("brightness must be between 10 and 100, got " + brightness);
+    }
+    this.brightness = brightness;
+  }
+  public void setColor(Color color) {
+    this.color = color;
+  }
+
+  //getters
+  public LightState getLightState() {
+    return lightState.getState();
+  }
+  public int getBrightness() {
+    return brightness;
+  }
+  public String getColorHex() {
+    return String.format("#%02X%02X%02X", color.getRed(), color.getGreen(), color.getBlue());
+  }
+
+  //transition
+  public void changeState(ILightState newState) {
+    this.lightState = newState;
+  }
+}
