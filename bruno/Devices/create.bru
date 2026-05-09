@@ -1,0 +1,18 @@
+meta {
+  name: Create device
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/devices
+  body: json
+}
+
+body:json {
+  {
+    "type": "Light",
+    "name": "Test Lamp",
+    "location": "Living Room"
+  }
+}

@@ -20,11 +20,11 @@ const multiplierOptions = [
   { label: '10x', value: 'x10' },
 ];
 
-export function ThermostatCard({ device, onUpdate }) {
+export function ThermostatCard({ device, onUpdate, onDelete }) {
   const isOn = device.state !== 'Off';
   return (
     <CardShell icon="pi-chart-line" name={device.name} typeLabel="Thermostat"
-               isActive={isOn} statusLabel={device.state}>
+               isActive={isOn} statusLabel={device.state} onDelete={onDelete}>
       <div className="control-row">
         <span className="control-label">Power</span>
         <InputSwitch checked={isOn}

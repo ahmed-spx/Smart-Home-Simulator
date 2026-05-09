@@ -1,7 +1,10 @@
 // Central place for every backend API call. The rest of the React app
 // imports these functions and never touches `fetch` directly.
 
-const BASE_URL = 'http://localhost:8080/api';
+// Relative path: works behind nginx in Docker AND with the Vite dev proxy
+// configured in vite.config.js. Override with VITE_API_BASE_URL at build time
+// if you need to point at a different host.
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
 
 // Small helper: POST a JSON body and parse the JSON response.
 async function postJson(url, body) {
@@ -52,3 +55,22 @@ export const setThermostatMultiplier = (id, multiplier) =>
 // DoorLock API
 export const toggleDoorLock = (id) =>
   postJson(`${BASE_URL}/doorlocks/${id}/toggle`);
+
+// Device management
+export const createDevice = async (type, name, location) => {
+  const res = await fetch(`${BASE_URL}/devices`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ type, name, location }),
+  });
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}));
+    throw new Error(data.message || `Failed to create device (HTTP ${res.status})`);
+  }
+  return res.json();
+};
+
+export const deleteDevice = async (id) => {
+  const res = await fetch(`${BASE_URL}/devices/${id}`, { method: 'DELETE' });
+  return res.ok;
+};

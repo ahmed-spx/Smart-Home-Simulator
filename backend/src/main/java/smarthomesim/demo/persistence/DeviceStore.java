@@ -48,6 +48,16 @@ public class DeviceStore {
     }
   }
 
+  public synchronized void addDevice(Device d) {
+    hub.put(d.getId(), d);
+    save();
+  }
+
+  public synchronized void removeDevice(String id) {
+    hub.remove(id);
+    save();
+  }
+
   public synchronized void save() {
     try {
       STATE_FILE.getParentFile().mkdirs();
