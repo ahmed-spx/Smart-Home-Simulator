@@ -17,6 +17,11 @@ The Smart Home Simulator enables you to:
 
 The application consists of a **Spring Boot REST API** backend that manages device state and logic, and a **React/Vite frontend** that provides an interactive web UI for controlling devices.
 
+## Demo Videos
+
+- [App Demo](#) - [*Add video link here*](https://teams.microsoft.com/l/meetingrecap?driveId=b%21DdAUydCzskyV1Yz-cXdM8hMGMbzKFElClPTtTXFeERzfP0MdjVMmQYLnY0E6AQ53&driveItemId=01RZ63GYQ667CYIGH4HZF3VXPE2TOJQRVZ&sitePath=https%3A%2F%2Fkennesawedu-my.sharepoint.com%2F%3Av%3A%2Fg%2Fpersonal%2Faalsaad1_students_kennesaw_edu%2FIQAe98WEGPw-S7rd5NTcmEa5AavBrnxJJSNYpxksHeIruPc&fileUrl=https%3A%2F%2Fkennesawedu-my.sharepoint.com%2Fpersonal%2Faalsaad1_students_kennesaw_edu%2FDocuments%2FRecordings%2FCall+with+Ahmad+Ibrahim-20260508_233410-Meeting+Recording.mp4%3Fweb%3D1&threadId=19%3A1bb4d7c6-416b-498e-a719-f933ce67c965_31972d3d-c8ca-4b62-afd5-4bbaea67506f%40unq.gbl.spaces&callId=534aa289-c262-4192-b206-ae99daba9ff1&threadType=OneOnOneChat&meetingType=Unknown&subType=RecapSharingLink_RecapCore)
+- [Architechture Walkthrough](#) - *Add video link here*
+
 ## Prerequisites
 
 **Only Docker and Docker Compose are required.** No additional tools, dependencies, or API keys are needed.
