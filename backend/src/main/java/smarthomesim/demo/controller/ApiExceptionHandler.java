@@ -10,6 +10,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import smarthomesim.demo.domain.exception.DeviceNotFoundException;
 import smarthomesim.demo.domain.exception.DomainException;
 import smarthomesim.demo.domain.exception.InvalidDeviceTypeException;
+import smarthomesim.demo.domain.exception.ConflictException;
 
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
@@ -44,6 +45,14 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     ProblemDetail pd = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
     pd.setType(URI.create("https://smarthomesim/problems/invalid-request"));
     pd.setTitle("Invalid request");
+    return pd;
+  }
+  
+  @ExceptionHandler(ConflictException.class)
+  public ProblemDetail handleConflict(ConflictException ex) {
+    ProblemDetail pd = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
+    pd.setType(URI.create("https://smarthomesim/problems/conflict"));
+    pd.setTitle("Conflict");
     return pd;
   }
 }

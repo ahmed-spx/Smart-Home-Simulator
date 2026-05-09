@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 import smarthomesim.demo.domain.Device;
+import smarthomesim.demo.domain.DeviceType;
 import smarthomesim.demo.domain.dto.RegisterDeviceRequest;
 import smarthomesim.demo.domain.events.DeviceRegisteredEvent;
 import smarthomesim.demo.domain.events.DeviceRemovedEvent;
@@ -18,6 +19,7 @@ import smarthomesim.demo.service.AuditLog;
 import smarthomesim.demo.service.factory.DeviceFactory;
 import smarthomesim.demo.repository.persistence.DeviceStore;
 import smarthomesim.demo.domain.events.DeviceStateChangedEvent;
+import smarthomesim.demo.domain.exception.ConflictException;
 
 @RestController
 @RequestMapping("/api/devices")
@@ -49,6 +51,16 @@ public class DeviceController {
 
   @PostMapping
   public ResponseEntity<Map<String, Object>> register(@Valid @RequestBody RegisterDeviceRequest req) {
+    if ("Thermostat".equals(req.type())) {
+      boolean alreadyHasOne = devices.values().stream()
+          .anyMatch(d -> d.getType() == DeviceType.Thermostat
+                      && d.getLocation().equalsIgnoreCase(req.location()));
+      if (alreadyHasOne) {
+        throw new ConflictException(
+            "A thermostat already exists in " + req.location()
+            + ". Only one thermostat per location is allowed.");
+      }
+    }
     String id;
     Device device;
     try {

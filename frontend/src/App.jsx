@@ -155,6 +155,7 @@ function App() {
         onHide={() => setShowAdd(false)}
         onSubmit={handleAdd}
         existingLocations={locations}
+        existingThermostatLocations={thermostats.map(t => t.location)}
       />
 
       <Header multiplier={multiplier} onAddDevice={() => setShowAdd(true)} />
