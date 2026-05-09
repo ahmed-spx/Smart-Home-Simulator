@@ -1,7 +1,7 @@
 // Central place for every backend API call. Surfaces backend ProblemDetail
 // errors as JS Errors so the UI can react.
 
-const BASE_URL = 'http://localhost:8080/api';
+const BASE_URL = '/api';
 
 async function handle(res) {
   if (!res.ok) {

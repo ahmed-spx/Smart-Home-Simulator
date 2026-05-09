@@ -36,7 +36,7 @@ function App() {
   useEffect(() => {
     const refresh = () => getAllDevices().then(setDevices).catch(showError);
     refresh();
-    const es = new EventSource('http://localhost:8080/api/events');
+    const es = new EventSource('/api/events');
     ['device-changed', 'device-added', 'device-removed'].forEach(name => {
       es.addEventListener(name, refresh);
     });
