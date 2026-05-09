@@ -21,7 +21,7 @@ export function FanCard({ device, onUpdate }) {
       </div>
       <div className="control-row">
         <span className="control-label">Speed</span>
-        <SelectButton value={device.speed} options={speedOptions} disabled={!isOn}
+        <SelectButton className="compact-select" value={device.speed} options={speedOptions} disabled={!isOn}
           onChange={async (e) => e.value && onUpdate(await setFanSpeed(device.id, e.value))} />
       </div>
     </CardShell>

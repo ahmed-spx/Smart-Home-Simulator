@@ -1,0 +1,13 @@
+meta {
+  name: Subscribe to SSE events
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/events
+}
+
+headers {
+  Accept: text/event-stream
+}

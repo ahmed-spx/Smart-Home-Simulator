@@ -24,7 +24,7 @@ export function ThermostatCard({ device, onUpdate }) {
   const isOn = device.state !== 'Off';
   return (
     <CardShell icon="pi-chart-line" name={device.name} typeLabel="Thermostat"
-               isActive={isOn} statusLabel={device.state}>
+               isActive={isOn} statusLabel={isOn ? 'On' : 'Off'}>
       <div className="control-row">
         <span className="control-label">Power</span>
         <InputSwitch checked={isOn}
@@ -42,19 +42,19 @@ export function ThermostatCard({ device, onUpdate }) {
       </div>
       <div className="control-row">
         <span className="control-label">Target</span>
-        <Slider value={device.desiredTemperature} min={50} max={90} disabled={!isOn}
+        <Slider value={device.desiredTemperature} min={60} max={80} disabled={!isOn}
           style={{ flex: 1 }}
           onChange={async (e) => onUpdate(await setThermostatTemperature(device.id, e.value))} />
         <span className="control-value">{device.desiredTemperature}°F</span>
       </div>
       <div className="control-row">
         <span className="control-label">Mode</span>
-        <SelectButton value={device.mode} options={modeOptions} disabled={!isOn}
+        <SelectButton className="compact-select" value={device.mode} options={modeOptions} disabled={!isOn}
           onChange={async (e) => e.value && onUpdate(await setThermostatMode(device.id, e.value))} />
       </div>
       <div className="control-row">
         <span className="control-label">Multiplier</span>
-        <SelectButton value={device.multiplier} options={multiplierOptions}
+        <SelectButton className="tiny-select" value={device.multiplier} options={multiplierOptions}
           onChange={async (e) => e.value && onUpdate(await setThermostatMultiplier(device.id, e.value))} />
       </div>
     </CardShell>
