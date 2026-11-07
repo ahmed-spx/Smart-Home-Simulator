@@ -1,0 +1,10 @@
+# Keep build contexts small and reproducible.
+**/node_modules
+**/dist
+**/target
+**/.git
+**/data
+**/.mvn/wrapper/maven-wrapper.jar
+**/*.iml
+**/.idea
+**/.vscode
